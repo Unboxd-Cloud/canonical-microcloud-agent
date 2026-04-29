@@ -14,6 +14,10 @@ SUPPORTED_WORKFLOWS = (
     "bootstrap_cluster",
     "upgrade_cluster",
     "assess_operator_tooling",
+    "install_microcloud_stack",
+    "configure_single_node",
+    "configure_multi_node",
+    "docker_prune_everything",
 )
 
 
@@ -49,10 +53,12 @@ def _route_workflow_command(service: object, command: str, args: list[str]) -> s
     environment = args[1] if len(args) > 1 else agentkernel_default_environment()
     inventory = args[2] if len(args) > 2 else agentkernel_default_inventory()
     terraform_dir = args[3] if len(args) > 3 else agentkernel_default_terraform_dir()
+    host = args[4] if len(args) > 4 else ""
     context = Context(
         environment=environment,
         inventory=inventory,
         terraform_dir=terraform_dir,
+        host=host,
     )
 
     if command == "plan":

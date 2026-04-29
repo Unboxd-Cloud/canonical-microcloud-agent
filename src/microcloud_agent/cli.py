@@ -22,6 +22,7 @@ def build_parser() -> argparse.ArgumentParser:
         sub.add_argument("--environment", default="lab")
         sub.add_argument("--inventory", default="ansible/inventories/lab/hosts.ini")
         sub.add_argument("--terraform-dir", default="terraform/environments/lab")
+        sub.add_argument("--host", default="")
         sub.add_argument("--mattermost", action="store_true")
         sub.add_argument("--mattermost-channel")
 
@@ -116,6 +117,7 @@ def main() -> int:
         environment=args.environment,
         inventory=args.inventory,
         terraform_dir=args.terraform_dir,
+        host=args.host,
     )
     if args.command == "plan":
         payload = service.plan(args.workflow, context)

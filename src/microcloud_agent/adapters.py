@@ -7,16 +7,24 @@ from .config import (
     ansible_inventory_bin,
     ansible_playbook_bin,
     canvas_bin,
+    computeruse_bin,
+    dig_bin,
+    dns_bin,
     docker_bin,
     github_bin,
     lxc_bin,
     lxc_ssh_target,
+    maybe_privileged,
     maybe_remote,
     microcloud_bin,
     microcloud_ssh_target,
     playwright_bin,
+    reverseproxy_bin,
+    reverseproxy_config_path,
+    ssh_bin,
     snap_bin,
     terraform_bin,
+    vpn_bin,
     vscode_bin,
 )
 from .models import CommandSpec
@@ -45,7 +53,7 @@ class MicrocloudAdapter:
         return CommandSpec(
             self.name,
             "bootstrap",
-            maybe_remote([microcloud_bin(), "init"], microcloud_ssh_target()),
+            maybe_remote(maybe_privileged([microcloud_bin(), "init"]), microcloud_ssh_target()),
             mutating=True,
         )
 
@@ -53,7 +61,7 @@ class MicrocloudAdapter:
         return CommandSpec(
             self.name,
             "add_node",
-            maybe_remote([microcloud_bin(), "add", name], microcloud_ssh_target()),
+            maybe_remote(maybe_privileged([microcloud_bin(), "add", name]), microcloud_ssh_target()),
             mutating=True,
         )
 
@@ -156,6 +164,14 @@ class DockerAdapter:
     def info(self) -> CommandSpec:
         return CommandSpec(self.name, "info", [docker_bin(), "info"])
 
+    def prune_everything(self) -> CommandSpec:
+        return CommandSpec(
+            self.name,
+            "prune_everything",
+            maybe_privileged([docker_bin(), "system", "prune", "-a", "--volumes", "-f"]),
+            mutating=True,
+        )
+
 
 class SnapAdapter:
     name = "snap"
@@ -165,6 +181,84 @@ class SnapAdapter:
 
     def list(self) -> CommandSpec:
         return CommandSpec(self.name, "list", [snap_bin(), "list"])
+
+    def install_microcloud_stack(self) -> list[CommandSpec]:
+        return [
+            CommandSpec(
+                self.name,
+                "install_lxd",
+                maybe_privileged([snap_bin(), "install", "lxd", "--cohort=+"]),
+                mutating=True,
+            ),
+            CommandSpec(
+                self.name,
+                "install_microceph",
+                maybe_privileged([snap_bin(), "install", "microceph", "--cohort=+"]),
+                mutating=True,
+            ),
+            CommandSpec(
+                self.name,
+                "install_microovn",
+                maybe_privileged([snap_bin(), "install", "microovn", "--cohort=+"]),
+                mutating=True,
+            ),
+            CommandSpec(
+                self.name,
+                "install_microcloud",
+                maybe_privileged([snap_bin(), "install", "microcloud", "--cohort=+"]),
+                mutating=True,
+            ),
+            CommandSpec(
+                self.name,
+                "hold_microcloud_stack",
+                maybe_privileged(
+                    [snap_bin(), "refresh", "lxd", "microceph", "microovn", "microcloud", "--hold"]
+                ),
+                mutating=True,
+            ),
+        ]
+
+
+class SSHAdapter:
+    name = "ssh"
+
+    def version(self) -> CommandSpec:
+        return CommandSpec(self.name, "version", [ssh_bin(), "-V"])
+
+
+class ComputerUseAdapter:
+    name = "computeruse"
+
+    def version(self) -> CommandSpec:
+        return CommandSpec(self.name, "version", [computeruse_bin(), "--version"])
+
+
+class VPNAdapter:
+    name = "vpn"
+
+    def status(self) -> CommandSpec:
+        return CommandSpec(self.name, "status", [vpn_bin(), "status"])
+
+
+class DNSAdapter:
+    name = "dns"
+
+    def status(self) -> CommandSpec:
+        return CommandSpec(self.name, "status", [dns_bin(), "status"])
+
+    def dig_version(self) -> CommandSpec:
+        return CommandSpec(self.name, "dig_version", [dig_bin(), "-v"])
+
+
+class ReverseProxyAdapter:
+    name = "reverseproxy"
+
+    def validate(self) -> CommandSpec:
+        return CommandSpec(
+            self.name,
+            "validate",
+            maybe_privileged([reverseproxy_bin(), "-t", "-c", reverseproxy_config_path()]),
+        )
 
 
 class PlaywrightAdapter:

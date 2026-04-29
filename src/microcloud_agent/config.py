@@ -13,6 +13,11 @@ def remote_exec_prefix() -> list[str]:
     return shlex.split(raw)
 
 
+def privilege_exec_prefix() -> list[str]:
+    raw = env("PRIVILEGE_EXEC_PREFIX")
+    return shlex.split(raw) if raw else []
+
+
 def binary_env(name: str, default: str) -> str:
     return env(name, default)
 
@@ -55,6 +60,34 @@ def docker_bin() -> str:
 
 def snap_bin() -> str:
     return binary_env("SNAP_BIN", "snap")
+
+
+def ssh_bin() -> str:
+    return binary_env("SSH_BIN", "ssh")
+
+
+def computeruse_bin() -> str:
+    return binary_env("COMPUTERUSE_BIN", "computer-use")
+
+
+def vpn_bin() -> str:
+    return binary_env("VPN_BIN", "tailscale")
+
+
+def dns_bin() -> str:
+    return binary_env("DNS_BIN", "resolvectl")
+
+
+def dig_bin() -> str:
+    return binary_env("DIG_BIN", "dig")
+
+
+def reverseproxy_bin() -> str:
+    return binary_env("REVERSEPROXY_BIN", "nginx")
+
+
+def reverseproxy_config_path() -> str:
+    return env("REVERSEPROXY_CONFIG_PATH", "/etc/nginx/nginx.conf")
 
 
 def playwright_bin() -> str:
@@ -152,3 +185,10 @@ def maybe_remote(argv: list[str], ssh_target: str) -> list[str]:
     if not ssh_target:
         return argv
     return [*remote_exec_prefix(), ssh_target, shlex.join(argv)]
+
+
+def maybe_privileged(argv: list[str]) -> list[str]:
+    prefix = privilege_exec_prefix()
+    if not prefix:
+        return argv
+    return [*prefix, *argv]

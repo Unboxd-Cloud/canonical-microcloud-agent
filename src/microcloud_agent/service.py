@@ -9,6 +9,9 @@ from .config import (
     ansible_inventory_bin,
     ansible_playbook_bin,
     canvas_bin,
+    computeruse_bin,
+    dig_bin,
+    dns_bin,
     docker_bin,
     github_bin,
     lxc_bin,
@@ -22,9 +25,14 @@ from .config import (
     oidc_issuer_url,
     openapi_base_url,
     playwright_bin,
+    privilege_exec_prefix,
     remote_exec_prefix,
+    reverseproxy_bin,
+    reverseproxy_config_path,
+    ssh_bin,
     snap_bin,
     terraform_bin,
+    vpn_bin,
     vscode_bin,
 )
 from .mattermost import MattermostNotifier, format_workflow_message
@@ -55,6 +63,7 @@ class AgentService:
                 "microcloud_bin": microcloud_bin(),
                 "microcloud_ssh_target": microcloud_ssh_target(),
                 "remote_exec_prefix": remote_exec_prefix(),
+                "privilege_exec_prefix": privilege_exec_prefix(),
                 "lxc_bin": lxc_bin(),
                 "lxc_ssh_target": lxc_ssh_target(),
                 "ansible_bin": ansible_bin(),
@@ -65,6 +74,13 @@ class AgentService:
                 "vscode_bin": vscode_bin(),
                 "docker_bin": docker_bin(),
                 "snap_bin": snap_bin(),
+                "ssh_bin": ssh_bin(),
+                "computeruse_bin": computeruse_bin(),
+                "vpn_bin": vpn_bin(),
+                "dns_bin": dns_bin(),
+                "dig_bin": dig_bin(),
+                "reverseproxy_bin": reverseproxy_bin(),
+                "reverseproxy_config_path": reverseproxy_config_path(),
                 "playwright_bin": playwright_bin(),
                 "canvas_bin": canvas_bin(),
                 "mattermost_webhook_configured": bool(mattermost_webhook_url()),
@@ -85,6 +101,12 @@ class AgentService:
                 "vscode": self.runner.available(vscode_bin()),
                 "docker": self.runner.available(docker_bin()),
                 "snap": self.runner.available(snap_bin()),
+                "ssh": self.runner.available(ssh_bin()),
+                "computeruse": self.runner.available(computeruse_bin()),
+                "vpn": self.runner.available(vpn_bin()),
+                "dns": self.runner.available(dns_bin()),
+                "dig": self.runner.available(dig_bin()),
+                "reverseproxy": self.runner.available(reverseproxy_bin()),
                 "playwright": self.runner.available(playwright_bin()),
                 "canvas": self.runner.available(canvas_bin()),
             },
@@ -140,7 +162,16 @@ class AgentService:
         return self.openapi_client.request(method, path, query=query, headers=headers, json_body=json_body)
 
     def chat(self, message: str) -> dict:
-        workflows = ["assess_health", "bootstrap_cluster", "upgrade_cluster", "assess_operator_tooling"]
+        workflows = [
+            "assess_health",
+            "bootstrap_cluster",
+            "upgrade_cluster",
+            "assess_operator_tooling",
+            "install_microcloud_stack",
+            "configure_single_node",
+            "configure_multi_node",
+            "docker_prune_everything",
+        ]
         text = build_chat_response(message, self.health(), workflows)
         return {"message": message, "response": text}
 

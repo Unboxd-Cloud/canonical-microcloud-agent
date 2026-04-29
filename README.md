@@ -21,6 +21,7 @@ What is real in this repository:
 - deterministic workflow planning and execution
 - approval-gated mutating operations
 - real subprocess execution for `microcloud`, `lxc`, `ansible`, `ansible-inventory`, and `terraform`
+- env-configurable host operator bridges for `ssh`, VPN, DNS, reverse proxy, Docker cleanup, and computer-use
 - OpenAPI-serving local HTTP API
 - streaming chat over CLI and HTTP
 - OIDC discovery and OAuth2 client-credentials support
@@ -54,6 +55,7 @@ Use environment variables to point the agent at real binaries and your MicroClou
 
 ```bash
 export REMOTE_EXEC_PREFIX=ssh
+export PRIVILEGE_EXEC_PREFIX=sudo
 export MICROCLOUD_SSH_TARGET=user@your-microcloud-server
 export MICROCLOUD_BIN=/snap/bin/microcloud
 export LXC_SSH_TARGET=user@your-microcloud-server
@@ -66,6 +68,13 @@ export GITHUB_BIN=gh
 export VSCODE_BIN=code
 export DOCKER_BIN=docker
 export SNAP_BIN=snap
+export SSH_BIN=ssh
+export COMPUTERUSE_BIN=computer-use
+export VPN_BIN=tailscale
+export DNS_BIN=resolvectl
+export DIG_BIN=dig
+export REVERSEPROXY_BIN=nginx
+export REVERSEPROXY_CONFIG_PATH=/etc/nginx/nginx.conf
 export PLAYWRIGHT_BIN=playwright
 export CANVAS_BIN=canvas
 export OIDC_ISSUER_URL=https://issuer.example.com
@@ -83,6 +92,7 @@ export AGENTKERNEL_DEFAULT_TERRAFORM_DIR=terraform/environments/lab
 
 When `MICROCLOUD_SSH_TARGET` is set, MicroCloud commands execute remotely through `ssh`.
 When `LXC_SSH_TARGET` is set, LXC commands execute remotely through `ssh`. If `LXC_SSH_TARGET` is unset, it falls back to `MICROCLOUD_SSH_TARGET`.
+When `PRIVILEGE_EXEC_PREFIX` is set, mutating host commands are prefixed with that executable, for example `sudo`.
 
 If you use Tailscale SSH, set:
 
@@ -99,6 +109,7 @@ cd /Users/apple/canonical-microcloud-agent
 PYTHONPATH=src python3 -m microcloud_agent health
 PYTHONPATH=src python3 -m microcloud_agent plan assess_health --environment lab
 PYTHONPATH=src python3 -m microcloud_agent run assess_health --environment lab
+PYTHONPATH=src python3 -m microcloud_agent plan configure_multi_node --environment lab --host node-2
 PYTHONPATH=src python3 -m microcloud_agent serve --host 127.0.0.1 --port 8765
 PYTHONPATH=src python3 -m microcloud_agent chat "what workflows do you support?"
 PYTHONPATH=src python3 -m unittest discover -s tests -v
@@ -229,9 +240,20 @@ MICROCLOUD_AGENT_APPROVAL=approved PYTHONPATH=src python3 -m microcloud_agent ru
 
 Without that token, the agent refuses to execute mutating steps.
 
+Examples of mutating host workflows:
+
+- `install_microcloud_stack`
+- `configure_single_node`
+- `configure_multi_node --host <node-name>`
+- `docker_prune_everything`
+
 ## Available workflows
 
 - `assess_health`
 - `bootstrap_cluster`
 - `upgrade_cluster`
 - `assess_operator_tooling`
+- `install_microcloud_stack`
+- `configure_single_node`
+- `configure_multi_node`
+- `docker_prune_everything`
