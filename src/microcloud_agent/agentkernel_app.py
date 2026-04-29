@@ -174,6 +174,9 @@ def _build_module(service: AgentService) -> Any:
             self._definitions = definitions
             self.load(definitions)
 
+        def load(self, agents: list[_AgentDefinition]) -> Any:
+            return super().load(agents)
+
         def _wrap(self, agent: _AgentDefinition, agents: list[_AgentDefinition]) -> Any:
             return MicroCloudAgent(agent)
 
