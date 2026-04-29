@@ -7,9 +7,10 @@ name = "canonical-microcloud-agent"
 version = "0.1.0"
 description = "Local operator agent for Canonical MicroCloud workflows"
 requires-python = ">=3.11"
+dependencies = ["python-multipart>=0.0.20"]
 
 [project.optional-dependencies]
-agent-kernel = ["agentkernel[api]>=0.3.3", "python-multipart>=0.0.20"]
+agent-kernel = ["agentkernel[api]>=0.3.3"]
 
 [project.scripts]
 microcloud-agent = "microcloud_agent.cli:main"
