@@ -1,0 +1,1 @@
+ubuntu ALL=(root) NOPASSWD: /usr/bin/docker, /usr/bin/snap, /snap/bin/microcloud, /usr/bin/resolvectl, /usr/sbin/nginx, /usr/bin/caddy, /usr/bin/systemctl

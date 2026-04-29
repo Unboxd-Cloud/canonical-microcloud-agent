@@ -18,6 +18,7 @@ Use:
 
 - `deploy/docker/docker-compose.host-operator.yml`
 - `deploy/docker/host-operator.env.example`
+- `deploy/docker/canonical-microcloud-agent-operator.sudoers.example`
 
 Typical setup:
 
@@ -27,8 +28,17 @@ cp host-operator.env.example host-operator.env
 mkdir -p ssh
 chmod 700 ssh
 # place your SSH private key at deploy/docker/ssh/id_ed25519
+# optionally install the scoped sudoers file on the target host
 docker compose -f docker-compose.host-operator.yml up -d --build
 docker compose -f docker-compose.host-operator.yml port caddy 80
+```
+
+If mutating host operations should run through `sudo`, install the example sudoers file on the target host and keep the env default:
+
+```bash
+sudo cp deploy/docker/canonical-microcloud-agent-operator.sudoers.example /etc/sudoers.d/canonical-microcloud-agent-operator
+sudo chmod 440 /etc/sudoers.d/canonical-microcloud-agent-operator
+sudo visudo -cf /etc/sudoers.d/canonical-microcloud-agent-operator
 ```
 
 ## Reverse proxy
@@ -50,6 +60,7 @@ docker compose -f docker-compose.host-operator.yml port caddy 80
 ## Key environment variables
 
 - `REMOTE_EXEC_PREFIX`
+- `PRIVILEGE_EXEC_PREFIX`
 - `OPERATOR_SSH_TARGET`
 - `MICROCLOUD_SSH_TARGET`
 - `LXC_SSH_TARGET`
@@ -62,6 +73,7 @@ Recommended defaults:
 
 ```bash
 REMOTE_EXEC_PREFIX="ssh -i /run/agent-ssh/id_ed25519 -o StrictHostKeyChecking=accept-new"
+PRIVILEGE_EXEC_PREFIX="sudo"
 OPERATOR_SSH_TARGET="ubuntu@your-microcloud-host"
 MICROCLOUD_SSH_TARGET="ubuntu@your-microcloud-host"
 LXC_SSH_TARGET="ubuntu@your-microcloud-host"
@@ -86,6 +98,7 @@ That includes workflows such as:
 ## Operational notes
 
 - The image includes `openssh-client` so remote execution works in-container.
+- `PRIVILEGE_EXEC_PREFIX=sudo` is the intended path for host-level Docker, Snap, MicroCloud, DNS, and reverse-proxy mutations, but only after the target host is configured for non-interactive `sudo`.
 - If you want `tailscale ssh` instead of `ssh`, provide that binary in your image or build a derivative image that installs it.
 - If the remote host uses Caddy, set `REVERSEPROXY_MODE=caddy`.
 - If the remote host uses Nginx, set `REVERSEPROXY_MODE=nginx` and `REVERSEPROXY_CONFIG_PATH=/etc/nginx/nginx.conf`.

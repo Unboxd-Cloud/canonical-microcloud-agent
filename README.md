@@ -208,6 +208,7 @@ cd deploy/docker
 cp host-operator.env.example host-operator.env
 mkdir -p ssh
 # place your private key at deploy/docker/ssh/id_ed25519
+# optionally install deploy/docker/canonical-microcloud-agent-operator.sudoers.example on the target host
 docker compose -f docker-compose.host-operator.yml up -d --build
 docker compose -f docker-compose.host-operator.yml port caddy 80
 ```
@@ -217,6 +218,8 @@ The bundled Caddy sidecar uses an auto-assigned host port:
 - no fixed binding to host `80` or `443`
 - deployment will not fail because those ports are already in use
 - inspect the assigned port with `docker compose port caddy 80`
+
+For privileged host workflows, the checked-in env example defaults `PRIVILEGE_EXEC_PREFIX=sudo`. Pair that with the scoped sudoers example at `deploy/docker/canonical-microcloud-agent-operator.sudoers.example` so remote operator commands do not block on password prompts.
 
 Image properties:
 
