@@ -9,7 +9,7 @@ description = "Local operator agent for Canonical MicroCloud workflows"
 requires-python = ">=3.11"
 
 [project.optional-dependencies]
-agent-kernel = ["agentkernel[api]>=0.3.3"]
+agent-kernel = ["agentkernel[api]>=0.3.3", "python-multipart>=0.0.20"]
 
 [project.scripts]
 microcloud-agent = "microcloud_agent.cli:main"
