@@ -91,6 +91,28 @@ PYTHONPATH=src python3 -m unittest tests.test_testcontainers_integration -v
 
 This test starts a real Alpine container with `testcontainers` and verifies the agent can execute the remote `lxc list --format json` path through the configured transport wrapper.
 
+## Docker Hub publishing
+
+The repository now includes a GitHub Actions workflow at `.github/workflows/publish-docker.yml`.
+
+To enable Docker Hub publishing, set:
+
+- repository variable `DOCKERHUB_REPOSITORY`
+- secret `DOCKERHUB_USERNAME`
+- secret `DOCKERHUB_TOKEN`
+
+`DOCKERHUB_REPOSITORY` should be the full Docker Hub repository name, for example:
+
+```text
+unboxdcloudplatform/canonical-microcloud-agent
+```
+
+Workflow behavior:
+
+- pull requests build and test the image, but do not push
+- pushes to `main` push to Docker Hub when the variable and secrets are configured
+- `workflow_dispatch` can force a push with the `push_image` input
+
 ## Mutating workflows
 
 Mutating operations require an approval token:

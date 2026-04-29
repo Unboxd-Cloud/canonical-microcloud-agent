@@ -1,0 +1,104 @@
+name: publish-docker
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      push_image:
+        description: "Push image to Docker Hub"
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      IMAGE_REPOSITORY: ${{ vars.DOCKERHUB_REPOSITORY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Run unit tests
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Prepare image settings
+        id: prep
+        shell: bash
+        run: |
+          set -euo pipefail
+          image_repository="${IMAGE_REPOSITORY:-local/canonical-microcloud-agent}"
+          should_push=false
+          build_date="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+          if [[ -n "${IMAGE_REPOSITORY:-}" ]] && [[ -n "${{ secrets.DOCKERHUB_USERNAME }}" ]] && [[ -n "${{ secrets.DOCKERHUB_TOKEN }}" ]]; then
+            case "${GITHUB_EVENT_NAME}" in
+              push)
+                should_push=true
+                ;;
+              workflow_dispatch)
+                if [[ "${{ inputs.push_image || 'false' }}" == "true" ]]; then
+                  should_push=true
+                fi
+                ;;
+            esac
+          fi
+
+          echo "image_repository=$image_repository" >> "$GITHUB_OUTPUT"
+          echo "should_push=$should_push" >> "$GITHUB_OUTPUT"
+          echo "build_date=$build_date" >> "$GITHUB_OUTPUT"
+
+      - name: Compute Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: docker.io/${{ steps.prep.outputs.image_repository }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=ref,event=branch
+            type=ref,event=tag
+            type=sha,prefix=sha-
+          labels: |
+            org.opencontainers.image.title=canonical-microcloud-agent
+            org.opencontainers.image.description=Canonical MicroCloud agent packaged with Agent Kernel
+
+      - name: Log in to Docker Hub
+        if: steps.prep.outputs.should_push == 'true'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and optionally push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ steps.prep.outputs.should_push == 'true' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          provenance: true
+          sbom: true
+          build-args: |
+            VERSION=${{ github.ref_name }}
+            VCS_REF=${{ github.sha }}
+            BUILD_DATE=${{ steps.prep.outputs.build_date }}
