@@ -14,6 +14,7 @@ Additional documentation:
 What is real in this repository:
 
 - executable Python CLI under `src/microcloud_agent/`
+- Agent Kernel runtime bridge for chat and API serving
 - deterministic workflow planning and execution
 - approval-gated mutating operations
 - real subprocess execution for `microcloud`, `lxc`, `ansible`, `ansible-inventory`, and `terraform`
@@ -31,6 +32,18 @@ What is not assumed:
 - production credentials or cluster access exist locally
 
 The agent handles that explicitly by reporting tool availability and failing with actionable errors when the runtime dependencies are absent.
+
+## Runtime modes
+
+This repository supports three real runtime shapes:
+
+- direct local CLI and HTTP mode via `python3 -m microcloud_agent ...`
+- Agent Kernel API mode via `python3 -m microcloud_agent.agentkernel_app`
+- containerized deployment via the hardened `Dockerfile`
+
+The direct CLI is the simplest operator path.
+The Agent Kernel entrypoint is the preferred long-running API runtime.
+The container image is the preferred publish and deployment artifact.
 
 ## Environment variables
 
@@ -57,6 +70,12 @@ export OAUTH2_CLIENT_ID=your-client-id
 export OAUTH2_CLIENT_SECRET=your-client-secret
 export OPENAPI_BASE_URL=https://api.example.com
 export MATTERMOST_WEBHOOK_URL=https://mattermost.example/hooks/your-webhook
+export AK_API__HOST=0.0.0.0
+export AK_API__PORT=8000
+export AGENTKERNEL_AGENT_NAME=microcloud-operator
+export AGENTKERNEL_DEFAULT_ENVIRONMENT=lab
+export AGENTKERNEL_DEFAULT_INVENTORY=ansible/inventories/lab/hosts.ini
+export AGENTKERNEL_DEFAULT_TERRAFORM_DIR=terraform/environments/lab
 ```
 
 When `MICROCLOUD_SSH_TARGET` is set, MicroCloud commands execute remotely through `ssh`.
@@ -82,6 +101,55 @@ PYTHONPATH=src python3 -m microcloud_agent chat "what workflows do you support?"
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 ```
 
+## Agent Kernel mode
+
+Run the long-lived API runtime locally with:
+
+```bash
+cd /Users/apple/canonical-microcloud-agent
+python3 -m venv .venv
+. .venv/bin/activate
+pip install .[agent-kernel]
+AK_API__HOST=127.0.0.1 AK_API__PORT=8010 python -m microcloud_agent.agentkernel_app
+```
+
+Useful endpoints in this mode:
+
+- `GET /health`
+- `GET /api/v1/agents`
+- `POST /api/v1/chat`
+- `GET /custom/health`
+- `POST /custom/plan`
+- `POST /custom/run`
+- `POST /custom/chat`
+- `POST /custom/chat/stream`
+
+Example:
+
+```bash
+curl http://127.0.0.1:8010/api/v1/agents
+curl http://127.0.0.1:8010/custom/health
+```
+
+## Systemd deployment
+
+A ready-to-install unit is provided at:
+
+- `deploy/systemd/canonical-microcloud-agent-kernel.service`
+- `deploy/systemd/canonical-microcloud-agent.env.example`
+
+Typical install flow on a host:
+
+```bash
+cp deploy/systemd/canonical-microcloud-agent-kernel.service /etc/systemd/system/
+cp deploy/systemd/canonical-microcloud-agent.env.example /etc/canonical-microcloud-agent.env
+systemctl daemon-reload
+systemctl enable --now canonical-microcloud-agent-kernel
+systemctl status canonical-microcloud-agent-kernel
+```
+
+The service reads overrides from `/etc/canonical-microcloud-agent.env`.
+
 ## Testcontainers integration test
 
 ```bash
@@ -90,6 +158,34 @@ PYTHONPATH=src python3 -m unittest tests.test_testcontainers_integration -v
 ```
 
 This test starts a real Alpine container with `testcontainers` and verifies the agent can execute the remote `lxc list --format json` path through the configured transport wrapper.
+
+## Docker image
+
+The container artifact is intended for publication and deployment.
+
+Local build:
+
+```bash
+docker build -t canonical-microcloud-agent:test .
+```
+
+Local run:
+
+```bash
+docker run --rm -p 8000:8000 \
+  -e AK_API__HOST=0.0.0.0 \
+  -e AK_API__PORT=8000 \
+  canonical-microcloud-agent:test
+```
+
+Image properties:
+
+- multi-stage build
+- non-root runtime user
+- OCI image labels
+- `pip check` during build
+- container `HEALTHCHECK`
+- reduced build context via `.dockerignore`
 
 ## Docker Hub publishing
 
@@ -112,6 +208,13 @@ Workflow behavior:
 - pull requests build and test the image, but do not push
 - pushes to `main` push to Docker Hub when the variable and secrets are configured
 - `workflow_dispatch` can force a push with the `push_image` input
+
+Tags produced by the workflow include:
+
+- `latest` on the default branch
+- branch tags
+- Git tags
+- `sha-<commit>`
 
 ## Mutating workflows
 
