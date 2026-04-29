@@ -6,6 +6,8 @@ from .config import (
     ansible_bin,
     ansible_inventory_bin,
     ansible_playbook_bin,
+    caddy_bin,
+    caddyfile_path,
     canvas_bin,
     computeruse_bin,
     dig_bin,
@@ -14,6 +16,7 @@ from .config import (
     github_bin,
     lxc_bin,
     lxc_ssh_target,
+    maybe_operator_remote,
     maybe_privileged,
     maybe_remote,
     microcloud_bin,
@@ -21,6 +24,7 @@ from .config import (
     playwright_bin,
     reverseproxy_bin,
     reverseproxy_config_path,
+    reverseproxy_mode,
     ssh_bin,
     snap_bin,
     terraform_bin,
@@ -159,16 +163,16 @@ class DockerAdapter:
     name = "docker"
 
     def version(self) -> CommandSpec:
-        return CommandSpec(self.name, "version", [docker_bin(), "--version"])
+        return CommandSpec(self.name, "version", maybe_operator_remote([docker_bin(), "--version"]))
 
     def info(self) -> CommandSpec:
-        return CommandSpec(self.name, "info", [docker_bin(), "info"])
+        return CommandSpec(self.name, "info", maybe_operator_remote([docker_bin(), "info"]))
 
     def prune_everything(self) -> CommandSpec:
         return CommandSpec(
             self.name,
             "prune_everything",
-            maybe_privileged([docker_bin(), "system", "prune", "-a", "--volumes", "-f"]),
+            maybe_operator_remote(maybe_privileged([docker_bin(), "system", "prune", "-a", "--volumes", "-f"])),
             mutating=True,
         )
 
@@ -177,42 +181,44 @@ class SnapAdapter:
     name = "snap"
 
     def version(self) -> CommandSpec:
-        return CommandSpec(self.name, "version", [snap_bin(), "version"])
+        return CommandSpec(self.name, "version", maybe_operator_remote([snap_bin(), "version"]))
 
     def list(self) -> CommandSpec:
-        return CommandSpec(self.name, "list", [snap_bin(), "list"])
+        return CommandSpec(self.name, "list", maybe_operator_remote([snap_bin(), "list"]))
 
     def install_microcloud_stack(self) -> list[CommandSpec]:
         return [
             CommandSpec(
                 self.name,
                 "install_lxd",
-                maybe_privileged([snap_bin(), "install", "lxd", "--cohort=+"]),
+                maybe_operator_remote(maybe_privileged([snap_bin(), "install", "lxd", "--cohort=+"])),
                 mutating=True,
             ),
             CommandSpec(
                 self.name,
                 "install_microceph",
-                maybe_privileged([snap_bin(), "install", "microceph", "--cohort=+"]),
+                maybe_operator_remote(maybe_privileged([snap_bin(), "install", "microceph", "--cohort=+"])),
                 mutating=True,
             ),
             CommandSpec(
                 self.name,
                 "install_microovn",
-                maybe_privileged([snap_bin(), "install", "microovn", "--cohort=+"]),
+                maybe_operator_remote(maybe_privileged([snap_bin(), "install", "microovn", "--cohort=+"])),
                 mutating=True,
             ),
             CommandSpec(
                 self.name,
                 "install_microcloud",
-                maybe_privileged([snap_bin(), "install", "microcloud", "--cohort=+"]),
+                maybe_operator_remote(maybe_privileged([snap_bin(), "install", "microcloud", "--cohort=+"])),
                 mutating=True,
             ),
             CommandSpec(
                 self.name,
                 "hold_microcloud_stack",
-                maybe_privileged(
-                    [snap_bin(), "refresh", "lxd", "microceph", "microovn", "microcloud", "--hold"]
+                maybe_operator_remote(
+                    maybe_privileged(
+                        [snap_bin(), "refresh", "lxd", "microceph", "microovn", "microcloud", "--hold"]
+                    )
                 ),
                 mutating=True,
             ),
@@ -230,34 +236,42 @@ class ComputerUseAdapter:
     name = "computeruse"
 
     def version(self) -> CommandSpec:
-        return CommandSpec(self.name, "version", [computeruse_bin(), "--version"])
+        return CommandSpec(self.name, "version", maybe_operator_remote([computeruse_bin(), "--version"]))
 
 
 class VPNAdapter:
     name = "vpn"
 
     def status(self) -> CommandSpec:
-        return CommandSpec(self.name, "status", [vpn_bin(), "status"])
+        return CommandSpec(self.name, "status", maybe_operator_remote([vpn_bin(), "status"]))
 
 
 class DNSAdapter:
     name = "dns"
 
     def status(self) -> CommandSpec:
-        return CommandSpec(self.name, "status", [dns_bin(), "status"])
+        return CommandSpec(self.name, "status", maybe_operator_remote([dns_bin(), "status"]))
 
     def dig_version(self) -> CommandSpec:
-        return CommandSpec(self.name, "dig_version", [dig_bin(), "-v"])
+        return CommandSpec(self.name, "dig_version", maybe_operator_remote([dig_bin(), "-v"]))
 
 
 class ReverseProxyAdapter:
     name = "reverseproxy"
 
     def validate(self) -> CommandSpec:
+        if reverseproxy_mode() == "caddy":
+            return CommandSpec(
+                self.name,
+                "validate",
+                maybe_operator_remote([caddy_bin(), "validate", "--config", caddyfile_path()]),
+                metadata={"mode": "caddy"},
+            )
         return CommandSpec(
             self.name,
             "validate",
-            maybe_privileged([reverseproxy_bin(), "-t", "-c", reverseproxy_config_path()]),
+            maybe_operator_remote(maybe_privileged([reverseproxy_bin(), "-t", "-c", reverseproxy_config_path()])),
+            metadata={"mode": "nginx"},
         )
 
 

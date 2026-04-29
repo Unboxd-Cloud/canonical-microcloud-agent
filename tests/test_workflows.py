@@ -11,6 +11,7 @@ class WorkflowTests(unittest.TestCase):
     def tearDown(self) -> None:
         os.environ.pop("MICROCLOUD_SSH_TARGET", None)
         os.environ.pop("LXC_SSH_TARGET", None)
+        os.environ.pop("OPERATOR_SSH_TARGET", None)
         os.environ.pop("REMOTE_EXEC_PREFIX", None)
         os.environ.pop("PRIVILEGE_EXEC_PREFIX", None)
 
@@ -117,3 +118,10 @@ class WorkflowTests(unittest.TestCase):
         self.assertEqual([step.name for step in plan], ["docker_info", "docker_prune_everything"])
         self.assertFalse(plan[0].spec.mutating)
         self.assertTrue(plan[1].spec.mutating)
+
+    def test_operator_tooling_steps_can_use_operator_ssh_target(self) -> None:
+        os.environ["OPERATOR_SSH_TARGET"] = "ubuntu@microcloud-host"
+        registry = WorkflowRegistry()
+        plan = registry.plan("assess_operator_tooling", Context(environment="lab"))
+        self.assertEqual(plan[3].spec.argv[:2], ["ssh", "ubuntu@microcloud-host"])
+        self.assertEqual(plan[4].spec.argv[:2], ["ssh", "ubuntu@microcloud-host"])

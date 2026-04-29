@@ -90,6 +90,18 @@ def reverseproxy_config_path() -> str:
     return env("REVERSEPROXY_CONFIG_PATH", "/etc/nginx/nginx.conf")
 
 
+def reverseproxy_mode() -> str:
+    return env("REVERSEPROXY_MODE", "nginx").strip().lower() or "nginx"
+
+
+def caddy_bin() -> str:
+    return binary_env("CADDY_BIN", "caddy")
+
+
+def caddyfile_path() -> str:
+    return env("CADDYFILE_PATH", "/etc/caddy/Caddyfile")
+
+
 def playwright_bin() -> str:
     return binary_env("PLAYWRIGHT_BIN", "playwright")
 
@@ -181,6 +193,10 @@ def lxc_ssh_target() -> str:
     return env("LXC_SSH_TARGET", microcloud_ssh_target())
 
 
+def operator_ssh_target() -> str:
+    return env("OPERATOR_SSH_TARGET", microcloud_ssh_target())
+
+
 def maybe_remote(argv: list[str], ssh_target: str) -> list[str]:
     if not ssh_target:
         return argv
@@ -192,3 +208,7 @@ def maybe_privileged(argv: list[str]) -> list[str]:
     if not prefix:
         return argv
     return [*prefix, *argv]
+
+
+def maybe_operator_remote(argv: list[str]) -> list[str]:
+    return maybe_remote(argv, operator_ssh_target())

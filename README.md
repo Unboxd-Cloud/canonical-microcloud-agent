@@ -8,6 +8,7 @@ Additional documentation:
 - [Usage and Testing](docs/operations/usage-and-testing.md)
 - [Feature Reference](docs/operations/features.md)
 - [API Reference](docs/api/reference.md)
+- [Docker Deployment](docs/operations/docker-deployment.md)
 - [Agent Spec](docs/agent/microcloud-agent-spec.md)
 - [Runtime Boundary](docs/architecture/runtime-boundary.md)
 - [Approval Model](docs/operations/approval-model.md)
@@ -56,6 +57,7 @@ Use environment variables to point the agent at real binaries and your MicroClou
 ```bash
 export REMOTE_EXEC_PREFIX=ssh
 export PRIVILEGE_EXEC_PREFIX=sudo
+export OPERATOR_SSH_TARGET=user@your-microcloud-server
 export MICROCLOUD_SSH_TARGET=user@your-microcloud-server
 export MICROCLOUD_BIN=/snap/bin/microcloud
 export LXC_SSH_TARGET=user@your-microcloud-server
@@ -74,7 +76,10 @@ export VPN_BIN=tailscale
 export DNS_BIN=resolvectl
 export DIG_BIN=dig
 export REVERSEPROXY_BIN=nginx
+export REVERSEPROXY_MODE=caddy
 export REVERSEPROXY_CONFIG_PATH=/etc/nginx/nginx.conf
+export CADDY_BIN=caddy
+export CADDYFILE_PATH=/etc/caddy/Caddyfile
 export PLAYWRIGHT_BIN=playwright
 export CANVAS_BIN=canvas
 export OIDC_ISSUER_URL=https://issuer.example.com
@@ -92,6 +97,7 @@ export AGENTKERNEL_DEFAULT_TERRAFORM_DIR=terraform/environments/lab
 
 When `MICROCLOUD_SSH_TARGET` is set, MicroCloud commands execute remotely through `ssh`.
 When `LXC_SSH_TARGET` is set, LXC commands execute remotely through `ssh`. If `LXC_SSH_TARGET` is unset, it falls back to `MICROCLOUD_SSH_TARGET`.
+When `OPERATOR_SSH_TARGET` is set, Docker, Snap, VPN, DNS, reverse-proxy, and computer-use commands execute on that remote host instead of inside the container or local runtime.
 When `PRIVILEGE_EXEC_PREFIX` is set, mutating host commands are prefixed with that executable, for example `sudo`.
 
 If you use Tailscale SSH, set:
@@ -192,10 +198,31 @@ docker run --rm -p 8000:8000 \
   canonical-microcloud-agent:test
 ```
 
+For host-operator deployment, prefer the checked-in Docker Compose bundle in `deploy/docker/`.
+That contract assumes the container serves the API and reaches the real MicroCloud host over SSH, rather than trying to run `snap` and `microcloud` directly inside the container.
+
+Quick start:
+
+```bash
+cd deploy/docker
+cp host-operator.env.example host-operator.env
+mkdir -p ssh
+# place your private key at deploy/docker/ssh/id_ed25519
+docker compose -f docker-compose.host-operator.yml up -d --build
+docker compose -f docker-compose.host-operator.yml port caddy 80
+```
+
+The bundled Caddy sidecar uses an auto-assigned host port:
+
+- no fixed binding to host `80` or `443`
+- deployment will not fail because those ports are already in use
+- inspect the assigned port with `docker compose port caddy 80`
+
 Image properties:
 
 - multi-stage build
 - non-root runtime user
+- bundled `openssh-client` for remote host execution
 - OCI image labels
 - `pip check` during build
 - container `HEALTHCHECK`

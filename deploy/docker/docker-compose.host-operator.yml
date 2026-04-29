@@ -1,0 +1,24 @@
+services:
+  agent:
+    image: ${AGENT_IMAGE:-unboxdcloudplatform/canonical-microcloud-agent:latest}
+    build:
+      context: ../..
+    restart: unless-stopped
+    env_file:
+      - ./host-operator.env
+    environment:
+      AK_API__HOST: 0.0.0.0
+      AK_API__PORT: 8000
+    volumes:
+      - ./ssh:/run/agent-ssh:ro
+    expose:
+      - "8000"
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      - agent
+    command: caddy reverse-proxy --from :80 --to agent:8000
+    ports:
+      - "127.0.0.1::80"

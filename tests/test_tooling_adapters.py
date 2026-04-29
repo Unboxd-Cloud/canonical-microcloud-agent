@@ -20,7 +20,13 @@ from microcloud_agent.adapters import (
 
 class ToolingAdapterTests(unittest.TestCase):
     def tearDown(self) -> None:
-        for name in ("PRIVILEGE_EXEC_PREFIX", "REVERSEPROXY_CONFIG_PATH"):
+        for name in (
+            "PRIVILEGE_EXEC_PREFIX",
+            "REVERSEPROXY_CONFIG_PATH",
+            "REVERSEPROXY_MODE",
+            "CADDYFILE_PATH",
+            "OPERATOR_SSH_TARGET",
+        ):
             os.environ.pop(name, None)
 
     def test_github_adapter_uses_gh(self) -> None:
@@ -34,6 +40,11 @@ class ToolingAdapterTests(unittest.TestCase):
     def test_docker_adapter_uses_docker(self) -> None:
         spec = DockerAdapter().info()
         self.assertEqual(spec.argv, ["docker", "info"])
+
+    def test_docker_adapter_can_use_operator_ssh_target(self) -> None:
+        os.environ["OPERATOR_SSH_TARGET"] = "ubuntu@microcloud-host"
+        spec = DockerAdapter().info()
+        self.assertEqual(spec.argv[:2], ["ssh", "ubuntu@microcloud-host"])
 
     def test_snap_adapter_uses_snap(self) -> None:
         spec = SnapAdapter().list()
@@ -89,6 +100,14 @@ class ToolingAdapterTests(unittest.TestCase):
         os.environ["REVERSEPROXY_CONFIG_PATH"] = "/tmp/nginx.conf"
         spec = ReverseProxyAdapter().validate()
         self.assertEqual(spec.argv, ["nginx", "-t", "-c", "/tmp/nginx.conf"])
+        self.assertEqual(spec.metadata["mode"], "nginx")
+
+    def test_reverse_proxy_adapter_can_validate_caddy(self) -> None:
+        os.environ["REVERSEPROXY_MODE"] = "caddy"
+        os.environ["CADDYFILE_PATH"] = "/tmp/Caddyfile"
+        spec = ReverseProxyAdapter().validate()
+        self.assertEqual(spec.argv, ["caddy", "validate", "--config", "/tmp/Caddyfile"])
+        self.assertEqual(spec.metadata["mode"], "caddy")
 
     def test_computeruse_adapter_uses_binary(self) -> None:
         spec = ComputerUseAdapter().version()

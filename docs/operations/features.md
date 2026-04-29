@@ -8,6 +8,7 @@ This document describes the real feature surface implemented in this repository.
 - Direct HTTP server under `src/microcloud_agent/api.py`
 - Agent Kernel bridge under `src/microcloud_agent/agentkernel_app.py`
 - Hardened Docker image build via `Dockerfile`
+- Docker host-operator deployment bundle under `deploy/docker/`
 - Systemd deployment template under `deploy/systemd/`
 
 ## Execution model
@@ -33,6 +34,11 @@ The runtime currently exposes these tool families:
 - `vscode`
 - `docker`
 - `snap`
+- `ssh`
+- `computeruse`
+- `vpn`
+- `dns`
+- `reverseproxy`
 - `playwright`
 - `canvas`
 
@@ -40,13 +46,14 @@ Each adapter resolves its binary from environment variables and reports availabi
 
 ## Remote execution
 
-The runtime can execute `microcloud` and `lxc` either locally or remotely.
+The runtime can execute `microcloud`, `lxc`, and host-operator tooling either locally or remotely.
 
 - Local mode runs the configured binary directly.
 - Remote mode wraps the command with `REMOTE_EXEC_PREFIX`.
 - `MICROCLOUD_SSH_TARGET` enables remote `microcloud`.
 - `LXC_SSH_TARGET` enables remote `lxc`.
 - If `LXC_SSH_TARGET` is unset, it falls back to `MICROCLOUD_SSH_TARGET`.
+- `OPERATOR_SSH_TARGET` enables remote Docker, Snap, VPN, DNS, reverse-proxy, and computer-use commands.
 
 Typical remote prefixes:
 
@@ -101,10 +108,71 @@ Steps:
 
 - `gh auth status`
 - `code --version`
+- `ssh -V`
 - `docker --version`
 - `snap version`
+- VPN status
+- DNS status
+- `dig -v`
+- reverse-proxy validation
+- computer-use version
 - `playwright --version`
 - `canvas --version`
+
+### `install_microcloud_stack`
+
+Purpose:
+Install the snap-based MicroCloud host dependencies on the target host.
+
+Steps:
+
+- `snap install lxd --cohort=+`
+- `snap install microceph --cohort=+`
+- `snap install microovn --cohort=+`
+- `snap install microcloud --cohort=+`
+- `snap refresh ... --hold`
+
+This workflow is mutating.
+
+### `configure_single_node`
+
+Purpose:
+Prepare and bootstrap a single-node MicroCloud deployment.
+
+Steps:
+
+- Ansible inventory dump
+- Ansible preflight playbook
+- `microcloud init`
+- `microcloud status`
+
+This workflow is mutating.
+
+### `configure_multi_node`
+
+Purpose:
+Add another node to an existing MicroCloud deployment.
+
+Steps:
+
+- Ansible inventory dump
+- `microcloud status`
+- `microcloud add <host>`
+- `lxc list --format json`
+
+This workflow is mutating and requires a `host` value in context.
+
+### `docker_prune_everything`
+
+Purpose:
+Perform a full Docker cleanup on the target operator host.
+
+Steps:
+
+- `docker info`
+- `docker system prune -a --volumes -f`
+
+This workflow is mutating.
 
 ## Chat and interaction channels
 
@@ -184,10 +252,24 @@ The container image currently includes:
 
 - multi-stage build
 - non-root runtime user
+- `openssh-client` for remote operator execution
 - OCI image labels
 - `pip check` at build time
 - Docker `HEALTHCHECK`
 - reduced build context through `.dockerignore`
+
+### Docker deployment bundle
+
+The repository includes a Compose-based host-operator deployment bundle:
+
+- `deploy/docker/docker-compose.host-operator.yml`
+- `deploy/docker/host-operator.env.example`
+
+It uses:
+
+- the agent container for API/runtime
+- a Caddy sidecar for reverse proxying
+- auto-assigned host port publishing for Caddy so deployment does not fail when `80` or `443` are occupied
 
 ### GitHub Actions publishing
 

@@ -23,6 +23,7 @@ For a server that already has Canonical MicroCloud installed:
 
 ```bash
 export REMOTE_EXEC_PREFIX=ssh
+export OPERATOR_SSH_TARGET=user@your-microcloud-server
 export MICROCLOUD_SSH_TARGET=user@your-microcloud-server
 export MICROCLOUD_BIN=/snap/bin/microcloud
 export LXC_SSH_TARGET=user@your-microcloud-server
@@ -33,10 +34,13 @@ For Tailscale SSH:
 
 ```bash
 export REMOTE_EXEC_PREFIX="tailscale ssh"
+export OPERATOR_SSH_TARGET=user@your-tailnet-host
 export MICROCLOUD_SSH_TARGET=user@your-tailnet-host
 export LXC_SSH_TARGET=user@your-tailnet-host
 export MICROCLOUD_BIN=/snap/bin/microcloud
 ```
+
+`OPERATOR_SSH_TARGET` extends remote execution to Docker, Snap, VPN, DNS, reverse-proxy, and computer-use workflows. This is the preferred way to run the agent from Docker.
 
 ## Optional local tool overrides
 
@@ -51,6 +55,16 @@ export GITHUB_BIN=gh
 export VSCODE_BIN=code
 export DOCKER_BIN=docker
 export SNAP_BIN=snap
+export SSH_BIN=ssh
+export COMPUTERUSE_BIN=computer-use
+export VPN_BIN=tailscale
+export DNS_BIN=resolvectl
+export DIG_BIN=dig
+export REVERSEPROXY_MODE=caddy
+export REVERSEPROXY_BIN=nginx
+export REVERSEPROXY_CONFIG_PATH=/etc/nginx/nginx.conf
+export CADDY_BIN=caddy
+export CADDYFILE_PATH=/etc/caddy/Caddyfile
 export PLAYWRIGHT_BIN=playwright
 export CANVAS_BIN=canvas
 ```
