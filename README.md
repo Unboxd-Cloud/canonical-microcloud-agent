@@ -2,6 +2,14 @@
 
 This repository contains a runnable local operator agent for Canonical MicroCloud environments.
 
+Additional documentation:
+
+- [Setup Guide](docs/operations/setup.md)
+- [Usage and Testing](docs/operations/usage-and-testing.md)
+- [Agent Spec](docs/agent/microcloud-agent-spec.md)
+- [Runtime Boundary](docs/architecture/runtime-boundary.md)
+- [Approval Model](docs/operations/approval-model.md)
+
 What is real in this repository:
 
 - executable Python CLI under `src/microcloud_agent/`
@@ -72,3 +80,9 @@ MICROCLOUD_AGENT_APPROVAL=approved PYTHONPATH=src python3 -m microcloud_agent ru
 ```
 
 Without that token, the agent refuses to execute mutating steps.
+
+## Available workflows
+
+- `assess_health`
+- `bootstrap_cluster`
+- `upgrade_cluster`
