@@ -1,0 +1,18 @@
+[Unit]
+Description=Canonical MicroCloud Agent via Agent Kernel
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/canonical-microcloud-agent
+Environment=PYTHONPATH=/home/ubuntu/canonical-microcloud-agent/src
+Environment=PATH=/home/ubuntu/canonical-microcloud-agent/.venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+EnvironmentFile=-/etc/canonical-microcloud-agent.env
+ExecStart=/home/ubuntu/canonical-microcloud-agent/.venv/bin/python -m microcloud_agent.agentkernel_app
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -65,6 +65,37 @@ def canvas_bin() -> str:
     return binary_env("CANVAS_BIN", "canvas")
 
 
+def agentkernel_dependency_spec() -> str:
+    return env("AGENTKERNEL_DEPENDENCY_SPEC", "agentkernel[api]>=0.3.3")
+
+
+def agentkernel_agent_name() -> str:
+    return env("AGENTKERNEL_AGENT_NAME", "microcloud-operator")
+
+
+def agentkernel_agent_description() -> str:
+    return env(
+        "AGENTKERNEL_AGENT_DESCRIPTION",
+        (
+            "Canonical MicroCloud operator agent. Supports `health`, `workflows`, "
+            "`plan <workflow> [environment]`, `run <workflow> [environment]`, "
+            "and free-form chat for capability discovery."
+        ),
+    )
+
+
+def agentkernel_default_environment() -> str:
+    return env("AGENTKERNEL_DEFAULT_ENVIRONMENT", "lab")
+
+
+def agentkernel_default_inventory() -> str:
+    return env("AGENTKERNEL_DEFAULT_INVENTORY", "ansible/inventories/lab/hosts.ini")
+
+
+def agentkernel_default_terraform_dir() -> str:
+    return env("AGENTKERNEL_DEFAULT_TERRAFORM_DIR", "terraform/environments/lab")
+
+
 def mattermost_webhook_url() -> str:
     return env("MATTERMOST_WEBHOOK_URL")
 
