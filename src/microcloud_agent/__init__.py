@@ -1,0 +1,2 @@
+"""Canonical MicroCloud agent package."""
+

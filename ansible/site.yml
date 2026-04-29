@@ -1,0 +1,13 @@
+---
+- name: Canonical MicroCloud preflight
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Verify control access to target hosts
+      ansible.builtin.ping:
+
+    - name: Gather minimal facts for workflow validation
+      ansible.builtin.setup:
+        gather_subset:
+          - min
+

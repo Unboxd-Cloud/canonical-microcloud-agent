@@ -1,0 +1,26 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Validate repository files
+        run: |
+          test -f docs/agent/microcloud-agent-spec.md
+          test -f docs/architecture/runtime-boundary.md
+          test -f services/tool-adapters/contracts.md
+          test -f src/microcloud_agent/cli.py
+      - name: Run unit tests
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -v
