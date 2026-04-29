@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canonical MicroCloud Agent</title>
+    <meta
+      name="description"
+      content="Canonical MicroCloud Agent is a production-grade operations agent for MicroCloud workflows, health checks, approvals, chat, API execution, and containerized deployment."
+    />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Canonical MicroCloud Agent",
+        "applicationCategory": "SystemApplication",
+        "applicationSubCategory": "Infrastructure Automation Agent",
+        "operatingSystem": "Linux",
+        "runtimePlatform": "Python 3.11+",
+        "description": "A production-grade operations agent for Canonical MicroCloud with workflow planning, health checks, approvals, chat, OpenAPI integration, OIDC support, and containerized deployment.",
+        "softwareVersion": "0.1.0",
+        "url": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
+        "downloadUrl": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
+        "installUrl": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
+        "codeRepository": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
+        "image": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
+        "author": {
+          "@type": "Organization",
+          "name": "Unboxd Cloud"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Unboxd Cloud"
+        },
+        "featureList": [
+          "Deterministic workflow planning and execution",
+          "Approval-gated mutating operations",
+          "MicroCloud and LXC runtime checks",
+          "Agent Kernel API bridge",
+          "Streaming chat",
+          "OIDC discovery and OAuth2 client credentials",
+          "OpenAPI request channel",
+          "Mattermost notifications",
+          "Docker and systemd deployment paths"
+        ],
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "sameAs": [
+          "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
+          "https://hub.docker.com/r/unboxdcloudplatform/canonical-microcloud-agent"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="#home" aria-label="Canonical MicroCloud Agent home">
+          <span class="brand-mark">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M24 4 40 12v24L24 44 8 36V12Z" />
+              <path d="M24 12 32 16v16l-8 4-8-4V16Z" />
+              <path d="M16 20h16M16 28h16" />
+            </svg>
+          </span>
+          <span class="brand-copy">
+            <strong>Canonical</strong>
+            <span>MicroCloud Agent</span>
+          </span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="#features">Features</a>
+          <a href="#api">API</a>
+          <a href="#deploy">Deploy</a>
+          <a href="../docs/operations/features.md">Docs</a>
+          <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
+          <a href="https://hub.docker.com/r/unboxdcloudplatform/canonical-microcloud-agent">Docker Hub</a>
+        </nav>
+        <a class="button button-primary" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">
+          Run the Agent
+        </a>
+      </header>
+
+      <main id="home">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="section-kicker">Production infrastructure automation for Canonical MicroCloud</p>
+            <h1>Automate MicroCloud operations with a production-grade agent.</h1>
+            <p class="hero-text">
+              Plan, inspect, approve, execute, and observe real infrastructure workflows across
+              MicroCloud, LXC, Ansible, Terraform, Agent Kernel, and Docker from one deterministic runtime.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">
+                Run the Agent
+              </a>
+              <a class="button button-secondary" href="../docs/api/reference.md">Read the API docs</a>
+            </div>
+            <ul class="hero-signals">
+              <li>Declarative workflows</li>
+              <li>Built-in health checks</li>
+              <li>Approval gating</li>
+              <li>API-first by design</li>
+            </ul>
+          </div>
+
+          <div class="hero-visual card-grid">
+            <article class="card orchestration-card">
+              <h2>Workflow orchestration</h2>
+              <div class="flow-board">
+                <div class="flow-node">Trigger</div>
+                <div class="flow-node">Plan</div>
+                <div class="flow-node">Apply</div>
+                <div class="flow-node">Health Check</div>
+                <div class="flow-node">Notify</div>
+                <div class="flow-node complete">Complete</div>
+              </div>
+            </article>
+            <article class="card status-card">
+              <h2>Health</h2>
+              <ul class="status-list">
+                <li><span>API</span><strong>Healthy</strong></li>
+                <li><span>Worker</span><strong>Healthy</strong></li>
+                <li><span>Storage</span><strong>Healthy</strong></li>
+                <li><span>Approvals</span><strong>Ready</strong></li>
+              </ul>
+            </article>
+            <article class="card channels-card">
+              <h2>Deployment channels</h2>
+              <ul class="channel-list">
+                <li>MicroCloud</li>
+                <li>Docker</li>
+                <li>systemd</li>
+                <li>Agent Kernel</li>
+                <li>Mattermost</li>
+              </ul>
+            </article>
+            <article class="card chat-card">
+              <h2>Agent chat</h2>
+              <p>Show status of edge-01 and recent deployments.</p>
+              <div class="chat-reply">edge-01 is healthy. Last deployment finished 12m ago.</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="features">
+          <div class="section-heading">
+            <p class="section-kicker">Feature surface</p>
+            <h2>Everything you need to run infrastructure, end to end.</h2>
+            <p>
+              The runtime is built around concrete operator actions, machine-visible APIs, and explicit execution boundaries.
+            </p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <h3>Workflow engine</h3>
+              <p>Plan and execute deterministic MicroCloud workflows with step-by-step command visibility.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Health and remediation</h3>
+              <p>Inspect runtime dependencies, infrastructure health, and command availability before execution.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Multi-channel deployment</h3>
+              <p>Run as a CLI, direct HTTP service, Agent Kernel runtime, systemd unit, or Docker container.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Agent interface</h3>
+              <p>Support chat, streaming responses, workflow planning, approvals, and API-native execution paths.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Observability built in</h3>
+              <p>Return structured health payloads, execution results, and workflow summaries fit for operators.</p>
+            </article>
+            <article class="feature-card">
+              <h3>Safety by default</h3>
+              <p>Mutating steps are blocked until approval is granted through environment-based policy gating.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section flow-section">
+          <div class="section-heading">
+            <p class="section-kicker">Execution model</p>
+            <h2>From intent to execution.</h2>
+            <p>Define. Plan. Approve. Execute. Observe.</p>
+          </div>
+          <div class="execution-strip">
+            <article class="mini-panel terminal-panel">
+              <span class="step-index">1. Define</span>
+              <pre><code>workflow: upgrade_cluster
+environment: prod
+service: api</code></pre>
+            </article>
+            <article class="mini-panel">
+              <span class="step-index">2. Plan</span>
+              <p>Inventory, health, and Terraform steps are generated before any mutation occurs.</p>
+            </article>
+            <article class="mini-panel">
+              <span class="step-index">3. Approve</span>
+              <p>Approval gating protects mutating actions and keeps execution auditable.</p>
+            </article>
+            <article class="mini-panel terminal-panel">
+              <span class="step-index">4. Execute</span>
+              <pre><code>✔ Pulling image
+✔ Running checks
+✔ Workflow complete</code></pre>
+            </article>
+            <article class="mini-panel">
+              <span class="step-index">5. Observe</span>
+              <p>Return structured results, notification payloads, and health visibility.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section api-section" id="api">
+          <div class="section-heading">
+            <p class="section-kicker">API first</p>
+            <h2>Automate everything over a clean runtime contract.</h2>
+            <p>The direct HTTP server and Agent Kernel layer expose the same operational core.</p>
+          </div>
+          <div class="api-layout">
+            <article class="terminal-panel large">
+              <div class="panel-title">Execute a workflow</div>
+              <pre><code>curl -X POST http://127.0.0.1:8765/run \
+  -H "Content-Type: application/json" \
+  -d '{
+    "workflow": "assess_health",
+    "context": {
+      "environment": "lab",
+      "inventory": "ansible/inventories/lab/hosts.ini",
+      "terraform_dir": "terraform/environments/lab"
+    }
+  }'</code></pre>
+            </article>
+            <div class="api-cards">
+              <article class="api-card">
+                <span class="verb post">POST</span>
+                <strong>/run</strong>
+                <p>Execute a structured workflow.</p>
+              </article>
+              <article class="api-card">
+                <span class="verb post">POST</span>
+                <strong>/chat/stream</strong>
+                <p>Return incremental SSE chat deltas.</p>
+              </article>
+              <article class="api-card">
+                <span class="verb get">GET</span>
+                <strong>/health</strong>
+                <p>Return config, tools, channels, and approval state.</p>
+              </article>
+              <article class="api-card">
+                <span class="verb post">POST</span>
+                <strong>/openapi/request</strong>
+                <p>Call an upstream API through a configured base URL.</p>
+              </article>
+            </div>
+          </div>
+          <a class="inline-link" href="../docs/api/reference.md">See full API reference</a>
+        </section>
+
+        <section class="section deploy-section" id="deploy">
+          <div class="section-heading">
+            <p class="section-kicker">Deployment paths</p>
+            <h2>Run anywhere. Built for real infrastructure.</h2>
+            <p>Choose the runtime. The agent keeps the execution semantics.</p>
+          </div>
+          <div class="deploy-grid">
+            <article class="deploy-card">
+              <h3>Docker</h3>
+              <p>Publish and run a hardened multi-stage container image with health checks and a non-root runtime user.</p>
+              <pre><code>docker run --rm -p 8000:8000 \
+  canonical-microcloud-agent:test</code></pre>
+            </article>
+            <article class="deploy-card">
+              <h3>systemd</h3>
+              <p>Install the provided unit and environment file for a managed Linux service.</p>
+              <pre><code>systemctl enable --now \
+  canonical-microcloud-agent-kernel</code></pre>
+            </article>
+            <article class="deploy-card">
+              <h3>Agent Kernel</h3>
+              <p>Expose `/api/v1/agents`, `/api/v1/chat`, and custom runtime routes under `/custom/*`.</p>
+              <ul>
+                <li>Workflow execution bridge</li>
+                <li>Streaming chat</li>
+                <li>Plugin system compatibility</li>
+                <li>Long-running API runtime</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="section security-section">
+          <div class="security-copy">
+            <p class="section-kicker">Security and control</p>
+            <h2>Safety at every step.</h2>
+            <ul class="checklist">
+              <li>Approval gating for mutating operations</li>
+              <li>Runtime dependency visibility before execution</li>
+              <li>OIDC discovery and OAuth2 client credentials</li>
+              <li>Mattermost notifications and auditable workflow summaries</li>
+              <li>Structured outputs for external policy and observability layers</li>
+            </ul>
+          </div>
+          <div class="security-board">
+            <div class="board-step">Workflow Submitted</div>
+            <div class="board-step">Policy Evaluation</div>
+            <div class="board-step accent">Approval Required?</div>
+            <div class="board-step">Execute Workflow</div>
+            <div class="board-log">
+              <span>10:22:14 workflow submitted</span>
+              <span>10:22:20 policy evaluated</span>
+              <span>10:22:26 approved by ops</span>
+              <span>10:24:11 workflow completed</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="section schema-section">
+          <div class="section-heading">
+            <p class="section-kicker">Structured data</p>
+            <h2>Trusted automation, machine-readable by design.</h2>
+          </div>
+          <div class="schema-layout">
+            <div class="schema-copy">
+              <article>
+                <h3>JSON-LD native</h3>
+                <p>Describe the agent as a `SoftwareApplication` with code, deployment, and feature metadata.</p>
+              </article>
+              <article>
+                <h3>Schema.org aligned</h3>
+                <p>Improve discoverability and interoperability for catalogs, docs, and automation surfaces.</p>
+              </article>
+              <article>
+                <h3>Automation you can trust</h3>
+                <p>Pair deterministic execution with structured metadata, container provenance, and API documentation.</p>
+              </article>
+            </div>
+            <article class="terminal-panel schema-code">
+              <div class="panel-title">SoftwareApplication JSON-LD</div>
+              <pre><code>{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Canonical MicroCloud Agent",
+  "applicationCategory": "SystemApplication",
+  "operatingSystem": "Linux"
+}</code></pre>
+            </article>
+          </div>
+        </section>
+
+        <section class="cta-band">
+          <div>
+            <p class="section-kicker">Ready to ship it?</p>
+            <h2>Prepare, deploy, and automate MicroCloud operations from one runtime.</h2>
+          </div>
+          <div class="hero-actions">
+            <a class="button button-light" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">
+              View source
+            </a>
+            <a class="button button-outline-light" href="../docs/operations/features.md">Explore features</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="footer-brand">
+          <div class="brand-mark small">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M24 4 40 12v24L24 44 8 36V12Z" />
+              <path d="M24 12 32 16v16l-8 4-8-4V16Z" />
+              <path d="M16 20h16M16 28h16" />
+            </svg>
+          </div>
+          <div>
+            <strong>Canonical MicroCloud Agent</strong>
+            <p>Production infrastructure automation for MicroCloud environments.</p>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="../docs/operations/features.md">Features</a>
+          <a href="../docs/api/reference.md">API</a>
+          <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
+          <a href="https://hub.docker.com/r/unboxdcloudplatform/canonical-microcloud-agent">Docker Hub</a>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

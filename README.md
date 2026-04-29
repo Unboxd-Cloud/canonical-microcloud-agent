@@ -6,9 +6,12 @@ Additional documentation:
 
 - [Setup Guide](docs/operations/setup.md)
 - [Usage and Testing](docs/operations/usage-and-testing.md)
+- [Feature Reference](docs/operations/features.md)
+- [API Reference](docs/api/reference.md)
 - [Agent Spec](docs/agent/microcloud-agent-spec.md)
 - [Runtime Boundary](docs/architecture/runtime-boundary.md)
 - [Approval Model](docs/operations/approval-model.md)
+- [Static Landing Page](website/index.html)
 - [Next.js Chat UI Template](ui/nextjs-chat-template)
 
 What is real in this repository:
