@@ -9,6 +9,7 @@ Additional documentation:
 - [Agent Spec](docs/agent/microcloud-agent-spec.md)
 - [Runtime Boundary](docs/architecture/runtime-boundary.md)
 - [Approval Model](docs/operations/approval-model.md)
+- [Next.js Chat UI Template](ui/nextjs-chat-template)
 
 What is real in this repository:
 
@@ -16,6 +17,12 @@ What is real in this repository:
 - deterministic workflow planning and execution
 - approval-gated mutating operations
 - real subprocess execution for `microcloud`, `lxc`, `ansible`, `ansible-inventory`, and `terraform`
+- OpenAPI-serving local HTTP API
+- streaming chat over CLI and HTTP
+- OIDC discovery and OAuth2 client-credentials support
+- external OpenAPI request channel
+- Mattermost notification channel
+- Next.js chat template UI
 - local validation with `unittest`
 
 What is not assumed:
@@ -39,6 +46,17 @@ export ANSIBLE_BIN=ansible
 export ANSIBLE_INVENTORY_BIN=ansible-inventory
 export ANSIBLE_PLAYBOOK_BIN=ansible-playbook
 export TERRAFORM_BIN=terraform
+export GITHUB_BIN=gh
+export VSCODE_BIN=code
+export DOCKER_BIN=docker
+export SNAP_BIN=snap
+export PLAYWRIGHT_BIN=playwright
+export CANVAS_BIN=canvas
+export OIDC_ISSUER_URL=https://issuer.example.com
+export OAUTH2_CLIENT_ID=your-client-id
+export OAUTH2_CLIENT_SECRET=your-client-secret
+export OPENAPI_BASE_URL=https://api.example.com
+export MATTERMOST_WEBHOOK_URL=https://mattermost.example/hooks/your-webhook
 ```
 
 When `MICROCLOUD_SSH_TARGET` is set, MicroCloud commands execute remotely through `ssh`.
@@ -59,6 +77,8 @@ cd /Users/apple/canonical-microcloud-agent
 PYTHONPATH=src python3 -m microcloud_agent health
 PYTHONPATH=src python3 -m microcloud_agent plan assess_health --environment lab
 PYTHONPATH=src python3 -m microcloud_agent run assess_health --environment lab
+PYTHONPATH=src python3 -m microcloud_agent serve --host 127.0.0.1 --port 8765
+PYTHONPATH=src python3 -m microcloud_agent chat "what workflows do you support?"
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 ```
 
@@ -86,3 +106,4 @@ Without that token, the agent refuses to execute mutating steps.
 - `assess_health`
 - `bootstrap_cluster`
 - `upgrade_cluster`
+- `assess_operator_tooling`

@@ -58,3 +58,67 @@
   - plan file where applicable
   - approval token for writes
 
+## `github`
+
+- Read-only operations:
+  - authentication status
+  - repository inspection
+- Mutating operations:
+  - none in the current agent implementation
+
+## `vscode`
+
+- Read-only operations:
+  - version inspection
+  - extension listing
+- Mutating operations:
+  - none in the current agent implementation
+
+## `docker`
+
+- Read-only operations:
+  - version inspection
+  - daemon information
+- Mutating operations:
+  - none in the current agent implementation
+
+## `snap`
+
+- Read-only operations:
+  - version inspection
+  - installed snap listing
+- Mutating operations:
+  - none in the current agent implementation
+
+## `playwright`
+
+- Read-only operations:
+  - version inspection
+- Mutating operations:
+  - none in the current agent implementation
+
+## `canvas`
+
+- Read-only operations:
+  - version inspection
+- Mutating operations:
+  - none in the current agent implementation
+
+## `openid-connect` / `oauth2`
+
+- Read-only operations:
+  - OIDC discovery
+  - OAuth2 client credentials token retrieval
+- Mutating operations:
+  - none in the current agent implementation
+
+## `openapi`
+
+- Read-only and write-capable operations:
+  - generic HTTP request execution against a configured OpenAPI-compatible endpoint
+- Required inputs:
+  - base URL
+  - optional bearer token
+  - method
+  - path
+  - optional query, headers, and JSON body

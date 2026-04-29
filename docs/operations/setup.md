@@ -47,6 +47,25 @@ export ANSIBLE_BIN=ansible
 export ANSIBLE_INVENTORY_BIN=ansible-inventory
 export ANSIBLE_PLAYBOOK_BIN=ansible-playbook
 export TERRAFORM_BIN=terraform
+export GITHUB_BIN=gh
+export VSCODE_BIN=code
+export DOCKER_BIN=docker
+export SNAP_BIN=snap
+export PLAYWRIGHT_BIN=playwright
+export CANVAS_BIN=canvas
+```
+
+## OIDC / OAuth2 and OpenAPI configuration
+
+Set these when the agent should authenticate through OIDC/OAuth2 or call an external OpenAPI endpoint:
+
+```bash
+export OIDC_ISSUER_URL=https://issuer.example.com
+export OAUTH2_CLIENT_ID=your-client-id
+export OAUTH2_CLIENT_SECRET=your-client-secret
+export OAUTH2_SCOPE="openid profile"
+export OPENAPI_BASE_URL=https://api.example.com
+export OPENAPI_BEARER_TOKEN=your-access-token
 ```
 
 ## Approval gate

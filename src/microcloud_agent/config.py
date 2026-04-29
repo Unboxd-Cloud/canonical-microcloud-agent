@@ -41,6 +41,74 @@ def terraform_bin() -> str:
     return binary_env("TERRAFORM_BIN", "terraform")
 
 
+def github_bin() -> str:
+    return binary_env("GITHUB_BIN", "gh")
+
+
+def vscode_bin() -> str:
+    return binary_env("VSCODE_BIN", "code")
+
+
+def docker_bin() -> str:
+    return binary_env("DOCKER_BIN", "docker")
+
+
+def snap_bin() -> str:
+    return binary_env("SNAP_BIN", "snap")
+
+
+def playwright_bin() -> str:
+    return binary_env("PLAYWRIGHT_BIN", "playwright")
+
+
+def canvas_bin() -> str:
+    return binary_env("CANVAS_BIN", "canvas")
+
+
+def mattermost_webhook_url() -> str:
+    return env("MATTERMOST_WEBHOOK_URL")
+
+
+def mattermost_default_channel() -> str:
+    return env("MATTERMOST_CHANNEL")
+
+
+def mattermost_username() -> str:
+    return env("MATTERMOST_USERNAME", "canonical-microcloud-agent")
+
+
+def openapi_base_url() -> str:
+    return env("OPENAPI_BASE_URL")
+
+
+def openapi_bearer_token() -> str:
+    return env("OPENAPI_BEARER_TOKEN")
+
+
+def openapi_timeout_seconds() -> float:
+    raw = env("OPENAPI_TIMEOUT_SECONDS", "15")
+    try:
+        return float(raw)
+    except ValueError:
+        return 15.0
+
+
+def oidc_issuer_url() -> str:
+    return env("OIDC_ISSUER_URL")
+
+
+def oauth2_client_id() -> str:
+    return env("OAUTH2_CLIENT_ID")
+
+
+def oauth2_client_secret() -> str:
+    return env("OAUTH2_CLIENT_SECRET")
+
+
+def oauth2_scope() -> str:
+    return env("OAUTH2_SCOPE")
+
+
 def microcloud_ssh_target() -> str:
     return env("MICROCLOUD_SSH_TARGET")
 

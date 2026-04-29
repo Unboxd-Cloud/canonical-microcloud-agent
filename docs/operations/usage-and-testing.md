@@ -21,6 +21,7 @@ Generate a plan without executing commands:
 PYTHONPATH=src python3 -m microcloud_agent plan assess_health --environment lab
 PYTHONPATH=src python3 -m microcloud_agent plan bootstrap_cluster --environment lab
 PYTHONPATH=src python3 -m microcloud_agent plan upgrade_cluster --environment staging
+PYTHONPATH=src python3 -m microcloud_agent plan assess_operator_tooling --environment lab
 ```
 
 ## Workflow execution
@@ -29,6 +30,23 @@ Run a read-only workflow:
 
 ```bash
 PYTHONPATH=src python3 -m microcloud_agent run assess_health --environment lab
+PYTHONPATH=src python3 -m microcloud_agent run assess_operator_tooling --environment lab
+```
+
+## OIDC, OAuth2, and OpenAPI
+
+```bash
+PYTHONPATH=src python3 -m microcloud_agent oidc-discovery
+PYTHONPATH=src python3 -m microcloud_agent oauth2-token
+PYTHONPATH=src python3 -m microcloud_agent openapi-request GET /health
+```
+
+## Chat and streaming
+
+```bash
+PYTHONPATH=src python3 -m microcloud_agent chat "what workflows do you support?"
+PYTHONPATH=src python3 -m microcloud_agent chat-stream "give me health status"
+PYTHONPATH=src python3 -m microcloud_agent serve --host 127.0.0.1 --port 8765
 ```
 
 Run an approval-gated workflow:

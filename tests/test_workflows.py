@@ -50,3 +50,18 @@ class WorkflowTests(unittest.TestCase):
         registry = WorkflowRegistry()
         plan = registry.plan("assess_health", Context(environment="lab"))
         self.assertEqual(plan[2].spec.argv[:2], ["tailscale", "ssh"])
+
+    def test_assess_operator_tooling_plan_contains_expected_steps(self) -> None:
+        registry = WorkflowRegistry()
+        plan = registry.plan("assess_operator_tooling", Context(environment="lab"))
+        self.assertEqual(
+            [step.name for step in plan],
+            [
+                "github_auth_status",
+                "vscode_version",
+                "docker_version",
+                "snap_version",
+                "playwright_version",
+                "canvas_version",
+            ],
+        )

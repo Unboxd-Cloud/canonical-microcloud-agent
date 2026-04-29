@@ -2,7 +2,19 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 
-from .adapters import AnsibleAdapter, Context, LxcAdapter, MicrocloudAdapter, TerraformAdapter
+from .adapters import (
+    AnsibleAdapter,
+    CanvasAdapter,
+    Context,
+    DockerAdapter,
+    GitHubAdapter,
+    LxcAdapter,
+    MicrocloudAdapter,
+    PlaywrightAdapter,
+    SnapAdapter,
+    TerraformAdapter,
+    VSCodeAdapter,
+)
 from .models import CommandSpec
 
 
@@ -20,9 +32,15 @@ class WorkflowStep:
 class WorkflowRegistry:
     def __init__(self) -> None:
         self.ansible = AnsibleAdapter()
+        self.canvas = CanvasAdapter()
+        self.docker = DockerAdapter()
+        self.github = GitHubAdapter()
         self.lxc = LxcAdapter()
         self.microcloud = MicrocloudAdapter()
+        self.playwright = PlaywrightAdapter()
+        self.snap = SnapAdapter()
         self.terraform = TerraformAdapter()
+        self.vscode = VSCodeAdapter()
 
     def plan(self, workflow_name: str, context: Context) -> list[WorkflowStep]:
         if workflow_name == "assess_health":
@@ -45,5 +63,13 @@ class WorkflowRegistry:
                 WorkflowStep("cluster_status", self.microcloud.status()),
                 WorkflowStep("terraform_plan", self.terraform.plan(context.terraform_dir)),
             ]
+        if workflow_name == "assess_operator_tooling":
+            return [
+                WorkflowStep("github_auth_status", self.github.auth_status()),
+                WorkflowStep("vscode_version", self.vscode.version()),
+                WorkflowStep("docker_version", self.docker.version()),
+                WorkflowStep("snap_version", self.snap.version()),
+                WorkflowStep("playwright_version", self.playwright.version()),
+                WorkflowStep("canvas_version", self.canvas.version()),
+            ]
         raise KeyError(f"Unknown workflow '{workflow_name}'.")
-

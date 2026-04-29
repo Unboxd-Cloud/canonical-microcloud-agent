@@ -6,12 +6,18 @@ from .config import (
     ansible_bin,
     ansible_inventory_bin,
     ansible_playbook_bin,
+    canvas_bin,
+    docker_bin,
+    github_bin,
     lxc_bin,
     lxc_ssh_target,
     maybe_remote,
     microcloud_bin,
     microcloud_ssh_target,
+    playwright_bin,
+    snap_bin,
     terraform_bin,
+    vscode_bin,
 )
 from .models import CommandSpec
 
@@ -119,3 +125,57 @@ class TerraformAdapter:
             [terraform_bin(), "-chdir=" + terraform_dir, "apply", "-auto-approve"],
             mutating=True,
         )
+
+
+class GitHubAdapter:
+    name = "github"
+
+    def auth_status(self) -> CommandSpec:
+        return CommandSpec(self.name, "auth_status", [github_bin(), "auth", "status"])
+
+    def repo_view(self) -> CommandSpec:
+        return CommandSpec(self.name, "repo_view", [github_bin(), "repo", "view"])
+
+
+class VSCodeAdapter:
+    name = "vscode"
+
+    def version(self) -> CommandSpec:
+        return CommandSpec(self.name, "version", [vscode_bin(), "--version"])
+
+    def list_extensions(self) -> CommandSpec:
+        return CommandSpec(self.name, "list_extensions", [vscode_bin(), "--list-extensions"])
+
+
+class DockerAdapter:
+    name = "docker"
+
+    def version(self) -> CommandSpec:
+        return CommandSpec(self.name, "version", [docker_bin(), "--version"])
+
+    def info(self) -> CommandSpec:
+        return CommandSpec(self.name, "info", [docker_bin(), "info"])
+
+
+class SnapAdapter:
+    name = "snap"
+
+    def version(self) -> CommandSpec:
+        return CommandSpec(self.name, "version", [snap_bin(), "version"])
+
+    def list(self) -> CommandSpec:
+        return CommandSpec(self.name, "list", [snap_bin(), "list"])
+
+
+class PlaywrightAdapter:
+    name = "playwright"
+
+    def version(self) -> CommandSpec:
+        return CommandSpec(self.name, "version", [playwright_bin(), "--version"])
+
+
+class CanvasAdapter:
+    name = "canvas"
+
+    def version(self) -> CommandSpec:
+        return CommandSpec(self.name, "version", [canvas_bin(), "--version"])
