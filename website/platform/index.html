@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Platform | Canonical MicroCloud Agent</title>
+    <meta name="description" content="Platform overview for Canonical MicroCloud Agent: workflow inventory, tool adapters, remote execution boundaries, and operational features grounded in the repository." />
+    <link rel="canonical" href="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/platform/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Platform | Canonical MicroCloud Agent" />
+    <meta property="og:description" content="Workflow inventory, tool adapters, remote execution boundaries, and operator-facing platform capabilities." />
+    <meta property="og:url" content="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/platform/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Platform | Canonical MicroCloud Agent" />
+    <meta name="twitter:description" content="Workflow inventory, tool adapters, remote execution boundaries, and operator-facing platform capabilities." />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Sora:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/platform/#webpage",
+            "url": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/platform/",
+            "name": "Platform",
+            "description": "Platform overview for Canonical MicroCloud Agent.",
+            "isPartOf": {
+              "@type": "WebSite",
+              "name": "Canonical MicroCloud Agent",
+              "url": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/"
+            }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/platform/#application",
+            "name": "Canonical MicroCloud Agent",
+            "applicationCategory": "SystemApplication",
+            "applicationSubCategory": "Infrastructure Automation Agent",
+            "operatingSystem": "Linux",
+            "featureList": [
+              "assess_health workflow",
+              "bootstrap_cluster workflow",
+              "upgrade_cluster workflow",
+              "configure_multi_node workflow",
+              "Tool adapters for microcloud, lxc, ansible, terraform, docker, snap, vpn, dns, reverseproxy, playwright, and canvas"
+            ]
+          },
+          {
+            "@type": "ItemList",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/platform/#workflows",
+            "name": "Workflow Surface",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "assess_health" },
+              { "@type": "ListItem", "position": 2, "name": "bootstrap_cluster" },
+              { "@type": "ListItem", "position": 3, "name": "upgrade_cluster" },
+              { "@type": "ListItem", "position": 4, "name": "configure_single_node" },
+              { "@type": "ListItem", "position": 5, "name": "configure_multi_node" },
+              { "@type": "ListItem", "position": 6, "name": "docker_prune_everything" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="../" aria-label="Canonical MicroCloud Agent home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 64 64">
+              <path d="M12 25 32 12l20 13v14L32 52 12 39Z" />
+              <path d="M22 31h20" /><path d="M18 22h28" /><path d="M20 40h24" />
+            </svg>
+          </span>
+          <span class="brand-copy"><strong>Canonical MicroCloud Agent</strong><span>Operator runtime for MicroCloud environments</span></span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a class="current" href="../platform/">Platform</a>
+          <a href="../runtime/">Runtime</a>
+          <a href="../deploy/">Deploy</a>
+          <a href="../invoke/">Invoke</a>
+          <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
+        </nav>
+        <a class="button button-primary" href="../invoke/">Open Demo Client</a>
+      </header>
+
+      <main>
+        <section class="subhero">
+          <p class="eyebrow">Platform</p>
+          <h1>Specific operator features, not generic cloud claims.</h1>
+          <p class="hero-text">
+            The repository already has a clear feature surface. This page turns that into a product narrative without diluting it:
+            workflows, tool adapters, remote execution, notifications, and identity-aware API federation.
+          </p>
+        </section>
+
+        <section class="section page-grid">
+          <div class="page-copy">
+            <h2>Core runtime surface</h2>
+            <p>
+              The runtime supports local CLI execution, a direct HTTP server, an Agent Kernel bridge, a hardened Docker image,
+              and host-operator deployment over SSH or Tailscale SSH.
+            </p>
+            <ul class="checklist" style="margin-top:18px;">
+              <li>Deterministic workflow planning before execution</li>
+              <li>Runtime discovery of actual binary availability on the host</li>
+              <li>Approval-gated mutating workflows</li>
+              <li>Structured health, plan, run, and chat outputs</li>
+            </ul>
+          </div>
+          <aside class="page-aside">
+            <div class="kpi-grid">
+              <article class="kpi-card"><strong>Runtime modes</strong><p>CLI, direct HTTP, Agent Kernel, Docker, systemd</p></article>
+              <article class="kpi-card"><strong>Execution paths</strong><p>Local binaries or remote wrappers via `ssh` and `tailscale ssh`</p></article>
+              <article class="kpi-card"><strong>Notification</strong><p>Mattermost outbound summaries and raw messages</p></article>
+              <article class="kpi-card"><strong>Federation</strong><p>OIDC discovery, OAuth2 client credentials, and OpenAPI request channel</p></article>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Workflow inventory</p>
+            <h2>Real workflows already implemented in the repo.</h2>
+          </div>
+          <div class="step-grid">
+            <article class="step-card"><h3>assess_health</h3><p>Inventory, fact gathering, `microcloud status`, `lxc list --format json`, and `terraform validate`.</p></article>
+            <article class="step-card"><h3>bootstrap_cluster</h3><p>Preflight, `terraform plan`, and `microcloud init` for cluster bring-up. Mutating.</p></article>
+            <article class="step-card"><h3>upgrade_cluster</h3><p>Upgrade-readiness flow across inventory, cluster status, and Terraform planning.</p></article>
+            <article class="step-card"><h3>assess_operator_tooling</h3><p>Checks `gh`, `code`, `ssh`, `docker`, `snap`, VPN, DNS, `dig`, reverse proxy, `playwright`, and `canvas`.</p></article>
+            <article class="step-card"><h3>configure_single_node</h3><p>Preflight plus `microcloud init` and status validation for single-node deployments. Mutating.</p></article>
+            <article class="step-card"><h3>configure_multi_node</h3><p>Uses inventory, `microcloud status`, `microcloud add &lt;host&gt;`, and `lxc list --format json`. Mutating and host-aware.</p></article>
+          </div>
+        </section>
+
+        <section class="section page-grid">
+          <div class="page-copy">
+            <h2>Tool adapters and remote boundaries</h2>
+            <p>
+              The agent resolves binaries from environment variables and reports availability through health responses.
+              The important design choice is that Docker hosts the API runtime, but the real infrastructure binaries remain on the target system.
+            </p>
+            <div class="stack-ribbon" style="margin-top:18px;">
+              <span>microcloud</span><span>lxc</span><span>ansible</span><span>terraform</span><span>docker</span><span>snap</span><span>ssh</span><span>vpn</span><span>dns</span><span>reverseproxy</span><span>playwright</span><span>canvas</span>
+            </div>
+          </div>
+          <aside class="page-aside">
+            <article class="terminal-block">
+              <div class="terminal-title">Remote execution model</div>
+              <pre><code>REMOTE_EXEC_PREFIX=ssh
+MICROCLOUD_SSH_TARGET=user@host
+LXC_SSH_TARGET=user@host
+OPERATOR_SSH_TARGET=user@host</code></pre>
+            </article>
+          </aside>
+        </section>
+
+        <section class="cta-band">
+          <p class="eyebrow">Next page</p>
+          <h2>See how the runtime is exposed over HTTP.</h2>
+          <p>The runtime page maps the direct server mode, Agent Kernel mode, and shared payload shapes into a clearer API story.</p>
+          <div class="hero-actions center">
+            <a class="button button-light" href="../runtime/">Open Runtime</a>
+            <a class="button button-outline" href="../invoke/">Try Invoke</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div><strong>Canonical MicroCloud Agent</strong><p>Workflow inventory, tool adapters, and remote-execution boundaries for MicroCloud operators.</p></div>
+        <div class="footer-links"><a href="../">Home</a><a href="../runtime/">Runtime</a><a href="../deploy/">Deploy</a><a href="../invoke/">Invoke</a></div>
+      </footer>
+    </div>
+  </body>
+</html>

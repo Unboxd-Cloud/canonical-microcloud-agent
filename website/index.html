@@ -3,57 +3,75 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UnboxdCloud | The Agentic Self-Governing Cloud At The Edge</title>
+    <title>Canonical MicroCloud Agent | Multi-Node Edge Operations Runtime</title>
     <meta
       name="description"
-      content="UnboxdCloud is an agentic self-governing cloud at the edge for operators who need AI-native automation, cluster workflows, and real infrastructure execution."
+      content="Canonical MicroCloud Agent is a deterministic operations runtime for MicroCloud environments, with workflow planning, approval-gated execution, direct HTTP APIs, Agent Kernel mode, and Docker host-operator deployment."
     />
+    <link rel="canonical" href="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Canonical MicroCloud Agent | Multi-Node Edge Operations Runtime" />
+    <meta property="og:description" content="Deterministic operator runtime for Canonical MicroCloud with workflow planning, approvals, chat, HTTP APIs, and Docker deployment." />
+    <meta property="og:url" content="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Canonical MicroCloud Agent | Multi-Node Edge Operations Runtime" />
+    <meta name="twitter:description" content="Deterministic operator runtime for Canonical MicroCloud with workflow planning, approvals, chat, HTTP APIs, and Docker deployment." />
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Sora:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "UnboxdCloud",
-        "applicationCategory": "BusinessApplication",
-        "applicationSubCategory": "Edge Cloud Control Plane",
-        "operatingSystem": "Linux",
-        "description": "UnboxdCloud is an agentic self-governing cloud at the edge for workflow-driven infrastructure operations, API-first automation, approvals, chat, and edge cluster execution.",
-        "softwareVersion": "0.1.0",
-        "url": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
-        "downloadUrl": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
-        "installUrl": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
-        "codeRepository": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
-        "author": {
-          "@type": "Organization",
-          "name": "Unboxd Cloud"
-        },
-        "publisher": {
-          "@type": "Organization",
-          "name": "Unboxd Cloud"
-        },
-        "featureList": [
-          "Agentic infrastructure operations",
-          "Edge cluster orchestration",
-          "Workflow planning and approvals",
-          "Streaming chat and API execution",
-          "Docker deployment for edge operator control planes",
-          "Remote execution over SSH and Tailscale"
-        ],
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        },
-        "sameAs": [
-          "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
-          "https://hub.docker.com/r/unboxdcloudplatform/canonical-microcloud-agent"
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/#organization",
+            "name": "Unboxd Cloud",
+            "url": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/#application",
+            "name": "Canonical MicroCloud Agent",
+            "applicationCategory": "SystemApplication",
+            "applicationSubCategory": "Infrastructure Automation Agent",
+            "operatingSystem": "Linux",
+            "runtimePlatform": "Python 3.11+",
+            "description": "A deterministic operator runtime for Canonical MicroCloud with workflow planning, approval-gated execution, direct HTTP APIs, Agent Kernel mode, and Docker host-operator deployment.",
+            "softwareVersion": "0.1.0",
+            "codeRepository": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent",
+            "author": { "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/#organization" },
+            "publisher": { "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/#organization" },
+            "featureList": [
+              "Deterministic workflow planning and execution",
+              "Approval-gated mutating operations",
+              "Direct HTTP API and Agent Kernel runtime",
+              "Remote execution over ssh and tailscale ssh",
+              "Docker host-operator deployment",
+              "Streaming chat and structured health responses"
+            ],
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/#webpage",
+            "url": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/",
+            "name": "Canonical MicroCloud Agent",
+            "description": "Homepage for the Canonical MicroCloud Agent marketing site.",
+            "isPartOf": {
+              "@type": "WebSite",
+              "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/#website",
+              "name": "Canonical MicroCloud Agent",
+              "url": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/"
+            },
+            "about": { "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/#application" }
+          }
         ]
       }
     </script>
@@ -61,7 +79,7 @@
   <body>
     <div class="page-shell">
       <header class="topbar">
-        <a class="brand" href="#home" aria-label="UnboxdCloud home">
+        <a class="brand" href="./" aria-label="Canonical MicroCloud Agent home">
           <span class="brand-mark" aria-hidden="true">
             <svg viewBox="0 0 64 64">
               <path d="M12 25 32 12l20 13v14L32 52 12 39Z" />
@@ -71,238 +89,193 @@
             </svg>
           </span>
           <span class="brand-copy">
-            <strong>UnboxdCloud</strong>
-            <span>The Agentic Self-Governing Cloud At The Edge</span>
+            <strong>Canonical MicroCloud Agent</strong>
+            <span>Operator runtime for MicroCloud environments</span>
           </span>
         </a>
         <nav class="topnav" aria-label="Primary">
-          <a href="#platform">Platform</a>
-          <a href="#operators">Operators</a>
-          <a href="#runtime">Runtime</a>
-          <a href="#deploy">Deploy</a>
+          <a href="./platform/">Platform</a>
+          <a href="./runtime/">Runtime</a>
+          <a href="./deploy/">Deploy</a>
+          <a href="./invoke/">Invoke</a>
           <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
         </nav>
-        <a class="button button-primary" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">
-          Deploy the Runtime
-        </a>
+        <a class="button button-primary" href="./deploy/">Deploy the Runtime</a>
       </header>
 
-      <main id="home">
+      <main>
         <section class="hero">
           <div class="hero-copy">
-            <p class="eyebrow">Self-governing edge infrastructure</p>
-            <h1>Run a cloud that thinks like an operator.</h1>
+            <p class="eyebrow">Deterministic edge operations</p>
+            <h1>Operate MicroCloud with a runtime that shows its work.</h1>
             <p class="hero-text">
-              UnboxdCloud is an agentic self-governing cloud at the edge: distributed infrastructure, remote clusters,
-              and edge workloads operated through real command execution, explicit approvals, and production-grade
-              operational boundaries.
+              Canonical MicroCloud Agent gives operators one deterministic control plane for planning,
+              approval-gated execution, chat, HTTP APIs, and remote host actions across MicroCloud,
+              LXC, Docker, DNS, VPN, and reverse-proxy tooling.
             </p>
             <div class="hero-actions">
-              <a class="button button-primary" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">
-                Start With Docker
-              </a>
-              <a class="button button-secondary" href="../docs/operations/docker-deployment.md">
-                Read Deployment Docs
-              </a>
+              <a class="button button-primary" href="./deploy/">Start with Docker</a>
+              <a class="button button-secondary" href="./invoke/">Try the API surface</a>
             </div>
             <ul class="signal-row">
-              <li>Workflow-native operations</li>
-              <li>Remote edge execution</li>
-              <li>Approvals before mutation</li>
-              <li>Chat, API, and automation in one runtime</li>
+              <li>Workflow-native planning before execution</li>
+              <li>Approval gate for mutating operations</li>
+              <li>Direct HTTP and Agent Kernel modes</li>
+              <li>Remote execution over ssh or tailscale ssh</li>
             </ul>
           </div>
 
           <div class="hero-stage">
             <article class="stage-panel stage-primary">
-              <span class="panel-label">Edge fabric</span>
-              <h2>One control plane. Many remote clusters.</h2>
+              <span class="panel-label">Operator fabric</span>
+              <h2>One runtime. Multiple hosts. Explicit steps.</h2>
               <p>
-                Coordinate MicroCloud, Docker, DNS, VPN, and reverse-proxy operations from a single agentic surface.
+                The control plane stays containerized while the actual `microcloud`, `lxc`, `docker`,
+                `snap`, and reverse-proxy binaries stay on the target host where they belong.
               </p>
               <div class="mesh">
-                <div class="mesh-node active">Metro Edge</div>
-                <div class="mesh-node">Retail Site</div>
-                <div class="mesh-node">Factory Cell</div>
-                <div class="mesh-node">Branch POP</div>
-                <div class="mesh-node">AI Rack</div>
-                <div class="mesh-node active">Ops Hub</div>
+                <div class="mesh-node active">Ops Runtime</div>
+                <div class="mesh-node">MicroCloud Host</div>
+                <div class="mesh-node">LXC Estate</div>
+                <div class="mesh-node">Docker Host</div>
+                <div class="mesh-node">DNS + Proxy</div>
+                <div class="mesh-node active">Operator Chat</div>
               </div>
             </article>
             <article class="stage-panel stage-terminal">
               <span class="panel-label">Live intent</span>
               <pre><code>workflow: configure_multi_node
-host: edge-mum-03
-transport: tailscale ssh
+host: node-2
+environment: lab
+transport: ssh
 approval: required
 status: planned</code></pre>
             </article>
             <article class="stage-panel stage-metrics">
               <span class="panel-label">Control signals</span>
               <ul>
-                <li><strong>API</strong><span>Healthy</span></li>
-                <li><strong>Runtime</strong><span>Agent Kernel</span></li>
-                <li><strong>Delivery</strong><span>Docker</span></li>
-                <li><strong>Execution</strong><span>Remote SSH</span></li>
+                <li><strong>Planning</strong><span>Deterministic</span></li>
+                <li><strong>Mutations</strong><span>Approval-Gated</span></li>
+                <li><strong>API Modes</strong><span>Direct + Agent Kernel</span></li>
+                <li><strong>Execution</strong><span>Remote Host Aware</span></li>
               </ul>
             </article>
           </div>
         </section>
 
-        <section class="section intro-grid" id="platform">
+        <section class="section intro-grid">
           <article class="intro-card intro-accent">
-            <p class="eyebrow">Why it exists</p>
-            <h2>Edge infrastructure should be programmable, not fragile.</h2>
+            <p class="eyebrow">Positioning</p>
+            <h2>The repo is strongest when it stays specific.</h2>
             <p>
-              Most edge platforms stop at dashboards. UnboxdCloud is designed to carry intent all the way into
-              controlled execution, with workflows, policies, and the real binaries operators already trust.
+              This project is not a generic edge-cloud story. It is a real Canonical MicroCloud operator runtime,
+              and the marketing site now reflects that instead of drifting into broader platform branding.
             </p>
           </article>
           <article class="intro-card">
-            <p class="eyebrow">What it does</p>
-            <h3>Turns operators into software-defined control loops.</h3>
+            <p class="eyebrow">What it is</p>
+            <h3>An operator runtime.</h3>
             <p>
-              The runtime can inspect, plan, approve, execute, report, and stream operational state across remote hosts and edge clusters.
+              It exposes workflows, health checks, chat, approvals, and HTTP endpoints for real infrastructure actions.
             </p>
           </article>
           <article class="intro-card">
-            <p class="eyebrow">What it avoids</p>
-            <h3>No fake abstraction layer.</h3>
+            <p class="eyebrow">What it is not</p>
+            <h3>Not a dashboard-only layer.</h3>
             <p>
-              It does not pretend infrastructure is safe because it is wrapped in chat. Commands stay explicit. Mutations stay gated.
+              Commands stay explicit, remote execution boundaries stay visible, and approvals are enforced for mutating paths.
             </p>
           </article>
         </section>
 
-        <section class="section feature-section" id="operators">
+        <section class="section feature-section">
           <div class="section-heading">
-            <p class="eyebrow">Built for operators</p>
-            <h2>The edge needs automation that respects reality.</h2>
+            <p class="eyebrow">Site map</p>
+            <h2>A real marketing repo, not a single landing page.</h2>
+            <p>
+              Each subpage now has its own canonical URL, metadata, and JSON-LD model matched to its intent.
+            </p>
           </div>
           <div class="feature-grid">
             <article class="feature-card">
-              <h3>Agentic operations</h3>
-              <p>Use chat, API requests, or workflows to move from intent to action without losing the operator’s mental model.</p>
+              <h3><a class="inline-link" href="./platform/">Platform</a></h3>
+              <p>Grounded product positioning, workflow inventory, tool adapters, and operational boundaries.</p>
             </article>
             <article class="feature-card">
-              <h3>Remote-first execution</h3>
-              <p>Reach edge hosts over SSH or Tailscale SSH, keeping the control plane containerized while execution stays close to the host.</p>
+              <h3><a class="inline-link" href="./runtime/">Runtime</a></h3>
+              <p>Direct HTTP mode, Agent Kernel mode, payload shapes, and the deterministic execution model.</p>
             </article>
             <article class="feature-card">
-              <h3>Approval boundaries</h3>
-              <p>Mutating actions remain blocked until approvals are explicit, making agentic automation usable in production.</p>
+              <h3><a class="inline-link" href="./deploy/">Deploy</a></h3>
+              <p>Docker host-operator setup, reverse-proxy strategy, environment variables, and approval boundaries.</p>
             </article>
             <article class="feature-card">
-              <h3>Multi-surface runtime</h3>
-              <p>Expose the same operational core through CLI, HTTP, streaming chat, Agent Kernel, and Docker deployment.</p>
+              <h3><a class="inline-link" href="./invoke/">Invoke</a></h3>
+              <p>Browser-driven demo client for `health`, `plan`, `run`, and `chat` against the local runtime.</p>
             </article>
             <article class="feature-card">
-              <h3>Edge control adapters</h3>
-              <p>Drive MicroCloud, LXC, Docker, Snap, VPN, DNS, reverse proxy, and operator toolchains through one policy-aware runtime.</p>
+              <h3>Page-specific schema</h3>
+              <p>Homepage, platform, runtime, deploy, and invoke pages each declare their own JSON-LD instead of copying one sitewide block.</p>
             </article>
             <article class="feature-card">
-              <h3>Structured observability</h3>
-              <p>Return clean JSON payloads for health, workflows, commands, and deployment status rather than opaque console noise.</p>
+              <h3>Shared visual system</h3>
+              <p>One set of styles and navigation keeps the repo coherent while allowing each page to carry its own technical depth.</p>
             </article>
           </div>
         </section>
 
-        <section class="section runtime-section" id="runtime">
+        <section class="section runtime-section">
           <div class="section-heading">
-            <p class="eyebrow">Runtime model</p>
-            <h2>AI-native, API-first, and still grounded in shell reality.</h2>
+            <p class="eyebrow">Execution model</p>
+            <h2>Intent enters once. The runtime makes every step inspectable.</h2>
           </div>
           <div class="runtime-grid">
             <article class="runtime-card wide">
               <span class="runtime-index">01</span>
-              <h3>Intent enters as chat, API, or workflow.</h3>
-              <p>Operators can ask questions, submit structured workflow payloads, or invoke the runtime directly from automation systems.</p>
+              <h3>Plan first.</h3>
+              <p>Every workflow can be planned without executing commands, so operators can inspect the exact steps before commit.</p>
             </article>
             <article class="runtime-card">
               <span class="runtime-index">02</span>
-              <h3>Planning stays deterministic.</h3>
-              <p>Every workflow resolves into explicit command steps before anything mutates the target environment.</p>
+              <h3>Approve mutation.</h3>
+              <p>Mutating workflows fail unless `MICROCLOUD_AGENT_APPROVAL=approved` is explicitly present.</p>
             </article>
             <article class="runtime-card">
               <span class="runtime-index">03</span>
-              <h3>Execution stays close to the host.</h3>
-              <p>The Docker control plane reaches the edge host over SSH instead of trying to masquerade as the host itself.</p>
+              <h3>Execute remotely.</h3>
+              <p>Remote command wrappers let the runtime stay in Docker while the host retains the real infrastructure binaries.</p>
             </article>
             <article class="runtime-card">
               <span class="runtime-index">04</span>
-              <h3>Responses come back structured.</h3>
-              <p>Health, workflow results, approvals, and telemetry surface as machine-usable outputs and human-readable operator context.</p>
+              <h3>Return structured results.</h3>
+              <p>Health, workflow steps, chat responses, and execution payloads come back as operator-usable JSON.</p>
             </article>
           </div>
         </section>
 
-        <section class="section stack-section">
-          <div class="section-heading">
-            <p class="eyebrow">Edge stack</p>
-            <h2>Designed to sit above the tools you already use.</h2>
-          </div>
-          <div class="stack-ribbon">
-            <span>MicroCloud</span>
-            <span>LXC</span>
-            <span>Docker</span>
-            <span>Tailscale</span>
-            <span>SSH</span>
-            <span>DNS</span>
-            <span>Caddy</span>
-            <span>Agent Kernel</span>
-            <span>OpenAPI</span>
-            <span>Mattermost</span>
-          </div>
-        </section>
-
-        <section class="section deploy-section" id="deploy">
-          <div class="deploy-copy">
-            <p class="eyebrow">Deployment</p>
-            <h2>Deploy the control plane once. Operate every edge site from there.</h2>
-            <p>
-              The recommended production shape is a Docker-deployed UnboxdCloud runtime plus a lightweight Caddy edge,
-              with remote execution into the actual infrastructure host.
-            </p>
-            <div class="deploy-actions">
-              <a class="button button-primary" href="../docs/operations/docker-deployment.md">Open Docker Guide</a>
-              <a class="button button-secondary" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">
-                View Source
-              </a>
-            </div>
-          </div>
-          <article class="terminal-block">
-            <div class="terminal-title">Bootstrap</div>
-            <pre><code>cd deploy/docker
-cp host-operator.env.example host-operator.env
-docker compose -f docker-compose.host-operator.yml up -d --build
-docker compose -f docker-compose.host-operator.yml port caddy 80</code></pre>
-          </article>
-        </section>
-
         <section class="cta-band">
-          <p class="eyebrow">UnboxdCloud</p>
-          <h2>The agentic self-governing cloud at the edge.</h2>
+          <p class="eyebrow">Canonical MicroCloud Agent</p>
+          <h2>Move from landing page to real operator surface.</h2>
           <p>
-            Built for teams that need distributed infrastructure to behave like a programmable system, not a collection of remote tickets.
+            The repo now has product, runtime, deployment, and invoke paths separated cleanly, which makes the technical story more precise and the site easier to extend.
           </p>
           <div class="hero-actions center">
-            <a class="button button-light" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">
-              Get the Runtime
-            </a>
-            <a class="button button-outline" href="../docs/api/reference.md">Explore the API</a>
+            <a class="button button-light" href="./platform/">Explore the Platform</a>
+            <a class="button button-outline" href="./invoke/">Open the Demo Client</a>
           </div>
         </section>
       </main>
 
       <footer class="footer">
         <div>
-          <strong>UnboxdCloud</strong>
-          <p>Agentic edge infrastructure for operators who need real control, not a demo surface.</p>
+          <strong>Canonical MicroCloud Agent</strong>
+          <p>Deterministic operator runtime for Canonical MicroCloud, remote execution, and approval-gated infrastructure workflows.</p>
         </div>
         <div class="footer-links">
-          <a href="../docs/operations/docker-deployment.md">Docker</a>
-          <a href="../docs/operations/features.md">Features</a>
-          <a href="../docs/api/reference.md">API</a>
+          <a href="./platform/">Platform</a>
+          <a href="./runtime/">Runtime</a>
+          <a href="./deploy/">Deploy</a>
+          <a href="./invoke/">Invoke</a>
           <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
         </div>
       </footer>

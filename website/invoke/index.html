@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoke | Canonical MicroCloud Agent</title>
+    <meta name="description" content="Interactive invoke page for Canonical MicroCloud Agent. Exercise health, plan, run, and chat endpoints against direct HTTP mode or Agent Kernel custom routes." />
+    <link rel="canonical" href="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/invoke/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Invoke | Canonical MicroCloud Agent" />
+    <meta property="og:description" content="Interactive invoke page for health, plan, run, and chat against the local runtime." />
+    <meta property="og:url" content="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/invoke/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Invoke | Canonical MicroCloud Agent" />
+    <meta name="twitter:description" content="Interactive invoke page for health, plan, run, and chat against the local runtime." />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Sora:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/invoke/#webpage",
+            "url": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/invoke/",
+            "name": "Invoke",
+            "description": "Interactive runtime invocation page for Canonical MicroCloud Agent."
+          },
+          {
+            "@type": "WebAPI",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/invoke/#api",
+            "name": "Canonical MicroCloud Agent Invocation Surface",
+            "description": "Browser-invoked health, plan, run, and chat calls for local runtime testing.",
+            "documentation": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent/blob/main/docs/api/reference.md",
+            "endpointUrl": [
+              "http://127.0.0.1:8765/health",
+              "http://127.0.0.1:8765/plan",
+              "http://127.0.0.1:8765/run",
+              "http://127.0.0.1:8765/chat",
+              "http://127.0.0.1:8010/custom/health",
+              "http://127.0.0.1:8010/custom/plan",
+              "http://127.0.0.1:8010/custom/run",
+              "http://127.0.0.1:8010/custom/chat"
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="../" aria-label="Canonical MicroCloud Agent home">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 25 32 12l20 13v14L32 52 12 39Z" /><path d="M22 31h20" /><path d="M18 22h28" /><path d="M20 40h24" /></svg></span>
+          <span class="brand-copy"><strong>Canonical MicroCloud Agent</strong><span>Operator runtime for MicroCloud environments</span></span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="../platform/">Platform</a>
+          <a href="../runtime/">Runtime</a>
+          <a href="../deploy/">Deploy</a>
+          <a class="current" href="../invoke/">Invoke</a>
+          <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
+        </nav>
+        <a class="button button-primary" href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent/blob/main/docs/api/reference.md">API Reference</a>
+      </header>
+
+      <main>
+        <section class="subhero">
+          <p class="eyebrow">Invoke</p>
+          <h1>Exercise the runtime API from a real client page.</h1>
+          <p class="hero-text">
+            This page builds request payloads for `health`, `plan`, `run`, and `chat`, then sends them to either direct HTTP mode or Agent Kernel custom routes.
+            It handles loading state, request preview, and visible success or failure output.
+          </p>
+        </section>
+
+        <section class="section output-grid">
+          <form class="form-panel" id="invoke-form">
+            <div id="invoke-status" class="status-chip">Idle</div>
+            <div class="form-row">
+              <label for="mode">Runtime mode</label>
+              <select id="mode" name="mode">
+                <option value="direct">Direct HTTP (`127.0.0.1:8765`)</option>
+                <option value="agentkernel">Agent Kernel custom (`127.0.0.1:8010/custom`)</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="base-url">Base URL</label>
+              <input id="base-url" name="base-url" value="http://127.0.0.1:8765" />
+            </div>
+            <div class="form-row">
+              <label for="action">Action</label>
+              <select id="action" name="action">
+                <option value="health">Health</option>
+                <option value="plan">Plan</option>
+                <option value="run">Run</option>
+                <option value="chat">Chat</option>
+              </select>
+            </div>
+            <div class="form-grid">
+              <div class="form-row">
+                <label for="workflow">Workflow</label>
+                <select id="workflow" name="workflow">
+                  <option value="assess_health">assess_health</option>
+                  <option value="assess_operator_tooling">assess_operator_tooling</option>
+                  <option value="upgrade_cluster">upgrade_cluster</option>
+                  <option value="configure_multi_node">configure_multi_node</option>
+                </select>
+              </div>
+              <div class="form-row">
+                <label for="environment">Environment</label>
+                <input id="environment" name="environment" value="lab" />
+              </div>
+              <div class="form-row">
+                <label for="inventory">Inventory</label>
+                <input id="inventory" name="inventory" value="ansible/inventories/lab/hosts.ini" />
+              </div>
+              <div class="form-row">
+                <label for="terraform-dir">Terraform directory</label>
+                <input id="terraform-dir" name="terraform-dir" value="terraform/environments/lab" />
+              </div>
+              <div class="form-row">
+                <label for="service">Service</label>
+                <input id="service" name="service" value="" />
+              </div>
+              <div class="form-row">
+                <label for="host">Host</label>
+                <input id="host" name="host" value="node-2" />
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="message">Chat message</label>
+              <textarea id="message" name="message">what workflows do you support?</textarea>
+            </div>
+            <div class="form-actions">
+              <button class="button button-primary" type="submit">Send Request</button>
+              <button class="button button-secondary" type="button" id="reset-demo">Reset Defaults</button>
+            </div>
+            <p class="form-note" style="margin-top:16px;">
+              Browser calls require the runtime to be reachable from this page. If the target server blocks cross-origin requests,
+              serve this site behind the same host or add the required CORS policy on your API runtime.
+            </p>
+            <ul class="form-help">
+              <li>`health` sends a GET request and ignores workflow fields.</li>
+              <li>`plan` and `run` send the shared workflow payload shape.</li>
+              <li>`chat` only sends the `message` field.</li>
+            </ul>
+          </form>
+
+          <div class="output-panel">
+            <h2>Request preview</h2>
+            <p class="output-note">The client shows the exact endpoint and payload before and after every request.</p>
+            <div id="request-summary" class="doc-card" style="margin:18px 0;"></div>
+            <pre id="response-output">No request sent yet.</pre>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Endpoint map</p>
+            <h2>What this page targets</h2>
+          </div>
+          <div class="step-grid">
+            <article class="step-card"><h3>Health</h3><p>`GET /health` or `GET /custom/health` for approval state, resolved config, tool availability, and channels.</p></article>
+            <article class="step-card"><h3>Plan</h3><p>`POST /plan` or `POST /custom/plan` with the workflow context payload.</p></article>
+            <article class="step-card"><h3>Run</h3><p>`POST /run` or `POST /custom/run`, which will still fail when mutation approval is missing.</p></article>
+          </div>
+        </section>
+
+        <section class="cta-band">
+          <p class="eyebrow">Related pages</p>
+          <h2>Review the contract, then test it.</h2>
+          <p>The runtime page explains the endpoint surface. The deploy page shows how to stand the runtime up in host-operator mode.</p>
+          <div class="hero-actions center">
+            <a class="button button-light" href="../runtime/">Runtime API</a>
+            <a class="button button-outline" href="../deploy/">Deploy Guide</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div><strong>Canonical MicroCloud Agent</strong><p>Interactive browser client for local runtime testing across health, plan, run, and chat.</p></div>
+        <div class="footer-links"><a href="../">Home</a><a href="../platform/">Platform</a><a href="../runtime/">Runtime</a><a href="../deploy/">Deploy</a></div>
+      </footer>
+    </div>
+    <script src="./app.js"></script>
+  </body>
+</html>

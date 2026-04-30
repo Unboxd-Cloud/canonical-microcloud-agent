@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deploy | Canonical MicroCloud Agent</title>
+    <meta name="description" content="Deployment guide page for Canonical MicroCloud Agent covering Docker host-operator setup, Caddy reverse proxy, remote SSH execution, and approval-gated mutating workflows." />
+    <link rel="canonical" href="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/deploy/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Deploy | Canonical MicroCloud Agent" />
+    <meta property="og:description" content="Docker host-operator setup, Caddy sidecar, remote SSH execution, and approval boundaries." />
+    <meta property="og:url" content="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/deploy/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Deploy | Canonical MicroCloud Agent" />
+    <meta name="twitter:description" content="Docker host-operator setup, Caddy sidecar, remote SSH execution, and approval boundaries." />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Sora:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/deploy/#webpage",
+            "url": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/deploy/",
+            "name": "Deploy",
+            "description": "Deployment guidance for Canonical MicroCloud Agent."
+          },
+          {
+            "@type": "HowTo",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/deploy/#howto",
+            "name": "Deploy Canonical MicroCloud Agent with Docker host-operator mode",
+            "description": "Use Docker to host the API runtime while executing host-operator commands remotely over SSH.",
+            "step": [
+              { "@type": "HowToStep", "position": 1, "name": "Copy the host operator environment file" },
+              { "@type": "HowToStep", "position": 2, "name": "Place the SSH key under deploy/docker/ssh/id_ed25519" },
+              { "@type": "HowToStep", "position": 3, "name": "Start docker compose with docker-compose.host-operator.yml" },
+              { "@type": "HowToStep", "position": 4, "name": "Inspect the Caddy host port assignment" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="../" aria-label="Canonical MicroCloud Agent home">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 25 32 12l20 13v14L32 52 12 39Z" /><path d="M22 31h20" /><path d="M18 22h28" /><path d="M20 40h24" /></svg></span>
+          <span class="brand-copy"><strong>Canonical MicroCloud Agent</strong><span>Operator runtime for MicroCloud environments</span></span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="../platform/">Platform</a>
+          <a href="../runtime/">Runtime</a>
+          <a class="current" href="../deploy/">Deploy</a>
+          <a href="../invoke/">Invoke</a>
+          <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
+        </nav>
+        <a class="button button-primary" href="../invoke/">Test After Deploy</a>
+      </header>
+
+      <main>
+        <section class="subhero">
+          <p class="eyebrow">Deployment</p>
+          <h1>Run the API in Docker. Keep infrastructure control on the host.</h1>
+          <p class="hero-text">
+            The recommended model is explicit: Docker hosts the API runtime, while `microcloud`, `lxc`, `snap`, Docker, DNS,
+            and reverse-proxy commands execute on the target machine over SSH or Tailscale SSH.
+          </p>
+        </section>
+
+        <section class="section page-grid">
+          <div class="page-copy">
+            <h2>Recommended host-operator model</h2>
+            <p>
+              This avoids fragile privilege and bind-mount combinations for host lifecycle control. The control plane remains portable,
+              and the actual infrastructure binaries stay exactly where operators expect them.
+            </p>
+            <div class="doc-stack" style="margin-top:18px;">
+              <article class="doc-card"><strong>Container role</strong><p>Serve the API and hold SSH client tooling for remote host operations.</p></article>
+              <article class="doc-card"><strong>Host role</strong><p>Retain `microcloud`, `lxc`, `snap`, Docker, DNS, and reverse-proxy binaries.</p></article>
+              <article class="doc-card"><strong>Reverse proxy</strong><p>Caddy sidecar publishes an auto-assigned host port instead of assuming `80` or `443` are free.</p></article>
+            </div>
+          </div>
+          <aside class="page-aside">
+            <article class="terminal-block">
+              <div class="terminal-title">Bootstrap</div>
+              <pre><code>cd deploy/docker
+cp host-operator.env.example host-operator.env
+mkdir -p ssh
+chmod 700 ssh
+docker compose -f docker-compose.host-operator.yml up -d --build
+docker compose -f docker-compose.host-operator.yml port caddy 80</code></pre>
+            </article>
+          </aside>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Key environment variables</p>
+            <h2>Configuration that defines the runtime boundary.</h2>
+          </div>
+          <div class="step-grid">
+            <article class="step-card"><h3>REMOTE_EXEC_PREFIX</h3><p>Choose `ssh` or `tailscale ssh` as the remote transport wrapper.</p></article>
+            <article class="step-card"><h3>OPERATOR_SSH_TARGET</h3><p>Targets host-level Docker, Snap, VPN, DNS, reverse-proxy, and computer-use commands.</p></article>
+            <article class="step-card"><h3>MICROCLOUD_SSH_TARGET</h3><p>Routes `microcloud` execution to the target server.</p></article>
+            <article class="step-card"><h3>LXC_SSH_TARGET</h3><p>Routes `lxc` execution, falling back to `MICROCLOUD_SSH_TARGET` when unset.</p></article>
+            <article class="step-card"><h3>REVERSEPROXY_MODE</h3><p>Choose `caddy` or `nginx` so validation and config actions use the right adapter.</p></article>
+            <article class="step-card"><h3>MICROCLOUD_AGENT_APPROVAL</h3><p>Required for mutating workflows such as `configure_multi_node` and `docker_prune_everything`.</p></article>
+          </div>
+        </section>
+
+        <section class="section page-grid">
+          <div class="page-copy">
+            <h2>Approval and operational safety</h2>
+            <p>
+              Mutating workflows stay blocked until the environment explicitly authorizes them. That boundary is part of the product, not an afterthought.
+            </p>
+            <article class="terminal-block" style="margin-top:18px;">
+              <div class="terminal-title">Approval gate</div>
+              <pre><code>export MICROCLOUD_AGENT_APPROVAL=approved</code></pre>
+            </article>
+          </div>
+          <aside class="page-aside">
+            <div class="doc-stack">
+              <article class="doc-card"><strong>Mutating workflows</strong><p>`install_microcloud_stack`, `configure_single_node`, `configure_multi_node`, and `docker_prune_everything` are gated.</p></article>
+              <article class="doc-card"><strong>Sudo path</strong><p>`PRIVILEGE_EXEC_PREFIX=sudo` is the intended route once the target host is configured for non-interactive sudo.</p></article>
+              <article class="doc-card"><strong>Proxy behavior</strong><p>Caddy uses `127.0.0.1::80`, which avoids startup failures from occupied host ports.</p></article>
+            </div>
+          </aside>
+        </section>
+
+        <section class="cta-band">
+          <p class="eyebrow">Next page</p>
+          <h2>Once it is running, hit the runtime from the browser.</h2>
+          <p>The invoke page provides a small client for health checks, workflow planning, execution, and chat against either runtime mode.</p>
+          <div class="hero-actions center">
+            <a class="button button-light" href="../invoke/">Open Invoke</a>
+            <a class="button button-outline" href="../runtime/">Review Runtime</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div><strong>Canonical MicroCloud Agent</strong><p>Docker host-operator deployment, Caddy sidecar, remote execution, and approval boundaries.</p></div>
+        <div class="footer-links"><a href="../">Home</a><a href="../platform/">Platform</a><a href="../runtime/">Runtime</a><a href="../invoke/">Invoke</a></div>
+      </footer>
+    </div>
+  </body>
+</html>

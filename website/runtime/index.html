@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Runtime API | Canonical MicroCloud Agent</title>
+    <meta name="description" content="Runtime API page for Canonical MicroCloud Agent covering direct HTTP mode, Agent Kernel mode, payload shapes, and deterministic plan/run/chat behavior." />
+    <link rel="canonical" href="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/runtime/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Runtime API | Canonical MicroCloud Agent" />
+    <meta property="og:description" content="Direct HTTP mode, Agent Kernel mode, shared payloads, and the deterministic operator API surface." />
+    <meta property="og:url" content="https://unboxdcloudplatform.github.io/canonical-microcloud-agent/runtime/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Runtime API | Canonical MicroCloud Agent" />
+    <meta name="twitter:description" content="Direct HTTP mode, Agent Kernel mode, shared payloads, and the deterministic operator API surface." />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Sora:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebPage",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/runtime/#webpage",
+            "url": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/runtime/",
+            "name": "Runtime API",
+            "description": "Runtime API overview for Canonical MicroCloud Agent."
+          },
+          {
+            "@type": "WebAPI",
+            "@id": "https://unboxdcloudplatform.github.io/canonical-microcloud-agent/runtime/#api",
+            "name": "Canonical MicroCloud Agent API",
+            "description": "HTTP interface for health checks, planning, execution, chat, OAuth2, and OpenAPI requests.",
+            "documentation": "https://github.com/unboxdcloudplatform/canonical-microcloud-agent/blob/main/docs/api/reference.md",
+            "provider": {
+              "@type": "Organization",
+              "name": "Unboxd Cloud"
+            },
+            "endpointUrl": [
+              "http://127.0.0.1:8765/health",
+              "http://127.0.0.1:8765/plan",
+              "http://127.0.0.1:8765/run",
+              "http://127.0.0.1:8765/chat",
+              "http://127.0.0.1:8010/custom/health",
+              "http://127.0.0.1:8010/custom/plan",
+              "http://127.0.0.1:8010/custom/run",
+              "http://127.0.0.1:8010/custom/chat"
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="../" aria-label="Canonical MicroCloud Agent home">
+          <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 25 32 12l20 13v14L32 52 12 39Z" /><path d="M22 31h20" /><path d="M18 22h28" /><path d="M20 40h24" /></svg></span>
+          <span class="brand-copy"><strong>Canonical MicroCloud Agent</strong><span>Operator runtime for MicroCloud environments</span></span>
+        </a>
+        <nav class="topnav" aria-label="Primary">
+          <a href="../platform/">Platform</a>
+          <a class="current" href="../runtime/">Runtime</a>
+          <a href="../deploy/">Deploy</a>
+          <a href="../invoke/">Invoke</a>
+          <a href="https://github.com/unboxdcloudplatform/canonical-microcloud-agent">GitHub</a>
+        </nav>
+        <a class="button button-primary" href="../invoke/">Exercise Endpoints</a>
+      </header>
+
+      <main>
+        <section class="subhero">
+          <p class="eyebrow">Runtime API</p>
+          <h1>Direct server mode and Agent Kernel mode, mapped clearly.</h1>
+          <p class="hero-text">
+            The same operational core is available through a direct HTTP server on `127.0.0.1:8765` or an Agent Kernel runtime
+            exposing core routes under `/api/v1/*` and custom operator routes under `/custom/*`.
+          </p>
+        </section>
+
+        <section class="section page-grid">
+          <div class="page-copy">
+            <h2>Two runtime shapes</h2>
+            <p>
+              Direct HTTP mode is the simplest local path. Agent Kernel mode is the preferred long-running API runtime with
+              both Agent Kernel endpoints and custom operator endpoints.
+            </p>
+            <div class="api-stack" style="margin-top:18px;">
+              <article class="api-card"><span class="api-verb get">GET</span><strong>/health</strong><p>Approval state, resolved config values, tool availability, and channels.</p></article>
+              <article class="api-card"><span class="api-verb post">POST</span><strong>/plan</strong><p>Plans a workflow without executing commands.</p></article>
+              <article class="api-card"><span class="api-verb post">POST</span><strong>/run</strong><p>Executes a workflow and enforces the mutation approval gate.</p></article>
+              <article class="api-card"><span class="api-verb post">POST</span><strong>/chat</strong><p>Synchronous JSON chat response for operator questions.</p></article>
+            </div>
+          </div>
+          <aside class="page-aside">
+            <article class="terminal-block">
+              <div class="terminal-title">Direct mode</div>
+              <pre><code>python3 -m microcloud_agent serve \
+  --host 127.0.0.1 \
+  --port 8765</code></pre>
+            </article>
+            <article class="terminal-block" style="margin-top:18px;">
+              <div class="terminal-title">Agent Kernel mode</div>
+              <pre><code>AK_API__HOST=127.0.0.1 \
+AK_API__PORT=8010 \
+python3 -m microcloud_agent.agentkernel_app</code></pre>
+            </article>
+          </aside>
+        </section>
+
+        <section class="section page-grid">
+          <div class="page-copy">
+            <h2>Shared payload shape</h2>
+            <p>
+              Planning and execution use the same workflow context, which means operators and automation systems can switch from `plan` to `run`
+              without changing the request structure.
+            </p>
+            <article class="terminal-block" style="margin-top:18px;">
+              <div class="terminal-title">Plan or run payload</div>
+              <pre><code>{
+  "workflow": "assess_health",
+  "context": {
+    "environment": "lab",
+    "inventory": "ansible/inventories/lab/hosts.ini",
+    "terraform_dir": "terraform/environments/lab",
+    "service": "",
+    "host": ""
+  }
+}</code></pre>
+            </article>
+          </div>
+          <aside class="page-aside">
+            <div class="doc-stack">
+              <article class="doc-card"><strong>Chat payload</strong><p>`{ "message": "what workflows do you support?" }`</p></article>
+              <article class="doc-card"><strong>Stream path</strong><p>`POST /chat/stream` returns `text/event-stream` deltas.</p></article>
+              <article class="doc-card"><strong>Federation paths</strong><p>`/openid-configuration`, `/oauth2/token`, and `/openapi/request` are part of the current HTTP surface.</p></article>
+            </div>
+          </aside>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <p class="eyebrow">Deterministic contract</p>
+            <h2>The runtime is strongest where the contract is explicit.</h2>
+          </div>
+          <div class="step-grid">
+            <article class="step-card"><h3>Plan before mutation</h3><p>Operators can inspect workflow steps before running them.</p></article>
+            <article class="step-card"><h3>Run with approval</h3><p>Mutating workflows fail unless `MICROCLOUD_AGENT_APPROVAL=approved` is set.</p></article>
+            <article class="step-card"><h3>Return structure</h3><p>Responses stay JSON-first instead of hiding behavior behind opaque chat copy.</p></article>
+          </div>
+        </section>
+
+        <section class="cta-band">
+          <p class="eyebrow">Next page</p>
+          <h2>Deploy it in the shape the repo actually recommends.</h2>
+          <p>The deployment page explains the host-operator Docker model, Caddy sidecar, key environment variables, and approval boundaries.</p>
+          <div class="hero-actions center">
+            <a class="button button-light" href="../deploy/">Open Deploy</a>
+            <a class="button button-outline" href="../invoke/">Open Invoke</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div><strong>Canonical MicroCloud Agent</strong><p>Direct HTTP mode, Agent Kernel mode, and deterministic workflow payloads.</p></div>
+        <div class="footer-links"><a href="../">Home</a><a href="../platform/">Platform</a><a href="../deploy/">Deploy</a><a href="../invoke/">Invoke</a></div>
+      </footer>
+    </div>
+  </body>
+</html>
