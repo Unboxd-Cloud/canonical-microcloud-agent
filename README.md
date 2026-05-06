@@ -129,6 +129,12 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 
 The agent is intended to inspect the host first, suggest a fitting MicroCloud path, and then wait for confirmation before any mutating action.
 
+Single-line Docker entrypoint:
+
+```bash
+bash scripts/docker-consult-setup.sh "install and manage MicroCloud on this machine"
+```
+
 Example:
 
 ```bash
@@ -212,6 +218,12 @@ This test starts a real Alpine container with `testcontainers` and verifies the 
 ## Docker image
 
 The container artifact is intended for publication and deployment.
+
+Single-line Docker consult flow:
+
+```bash
+bash scripts/docker-consult-setup.sh "install and manage MicroCloud on this machine"
+```
 
 Local build:
 
