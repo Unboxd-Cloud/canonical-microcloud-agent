@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "canonical-microcloud-agent"
 version = "0.1.0"
-description = "Local operator agent for Canonical MicroCloud workflows"
+description = "AGenNext Microcloud Agent for consultative MicroCloud operations"
 requires-python = ">=3.11"
 dependencies = ["python-multipart>=0.0.20"]
 

@@ -1,4 +1,4 @@
-# Canonical MicroCloud Agent
+# AGenNext Microcloud Agent
 
 This repository contains a runnable local operator agent for Canonical MicroCloud environments.
 
@@ -91,7 +91,7 @@ export OPENAPI_BASE_URL=https://api.example.com
 export MATTERMOST_WEBHOOK_URL=https://mattermost.example/hooks/your-webhook
 export AK_API__HOST=0.0.0.0
 export AK_API__PORT=8000
-export AGENTKERNEL_AGENT_NAME=microcloud-operator
+export AGENTKERNEL_AGENT_NAME=agennext-microcloud-agent
 export AGENTKERNEL_DEFAULT_ENVIRONMENT=lab
 export AGENTKERNEL_DEFAULT_INVENTORY=ansible/inventories/lab/hosts.ini
 export AGENTKERNEL_DEFAULT_TERRAFORM_DIR=terraform/environments/lab

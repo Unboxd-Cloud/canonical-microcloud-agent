@@ -115,14 +115,14 @@ def agentkernel_dependency_spec() -> str:
 
 
 def agentkernel_agent_name() -> str:
-    return env("AGENTKERNEL_AGENT_NAME", "microcloud-operator")
+    return env("AGENTKERNEL_AGENT_NAME", "agennext-microcloud-agent")
 
 
 def agentkernel_agent_description() -> str:
     return env(
         "AGENTKERNEL_AGENT_DESCRIPTION",
         (
-            "Canonical MicroCloud operator agent. Supports `health`, `workflows`, "
+            "AGenNext Microcloud Agent. Supports `health`, `workflows`, "
             "`plan <workflow> [environment]`, `run <workflow> [environment]`, "
             "and free-form chat for capability discovery."
         ),

@@ -11,7 +11,7 @@ from .service import AgentService
 def openapi_document() -> dict[str, Any]:
     return {
         "openapi": "3.1.0",
-        "info": {"title": "Canonical MicroCloud Agent API", "version": "0.1.0"},
+        "info": {"title": "AGenNext Microcloud Agent API", "version": "0.1.0"},
         "paths": {
             "/health": {"get": {"responses": {"200": {"description": "Health payload"}}}},
             "/plan": {"post": {"responses": {"200": {"description": "Workflow plan"}}}},

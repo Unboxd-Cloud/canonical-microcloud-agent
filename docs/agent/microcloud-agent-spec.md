@@ -1,4 +1,4 @@
-# Canonical MicroCloud Agent Spec
+# AGenNext Microcloud Agent Spec
 
 ## 1. Objective
 
@@ -81,4 +81,3 @@
 - Failure path tested: required for workflow interruption, tool failure, and approval denial.
 - Approval path tested: required for all mutating workflows.
 - Rollback path tested: required for upgrade, restore, and infrastructure change workflows.
-

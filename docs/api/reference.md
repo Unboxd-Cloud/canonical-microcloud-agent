@@ -257,7 +257,7 @@ Example response:
 
 ```json
 {
-  "agents": ["microcloud-operator"]
+  "agents": ["agennext-microcloud-agent"]
 }
 ```
 
@@ -270,7 +270,7 @@ Request:
 ```json
 {
   "prompt": "health",
-  "agent": "microcloud-operator",
+  "agent": "agennext-microcloud-agent",
   "session_id": "demo-session"
 }
 ```
