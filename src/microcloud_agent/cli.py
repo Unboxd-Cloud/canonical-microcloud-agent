@@ -30,6 +30,13 @@ def build_parser() -> argparse.ArgumentParser:
     notify.add_argument("message")
     notify.add_argument("--channel")
 
+    consult = subparsers.add_parser("consult-setup")
+    consult.add_argument("goal")
+
+    remember = subparsers.add_parser("remember")
+    remember.add_argument("key")
+    remember.add_argument("value")
+
     oidc = subparsers.add_parser("oidc-discovery")
     oauth2 = subparsers.add_parser("oauth2-token")
 
@@ -76,6 +83,14 @@ def main() -> int:
 
     if args.command == "notify":
         print(json.dumps(service.notify(args.message, channel=args.channel), indent=2))
+        return 0
+
+    if args.command == "consult-setup":
+        print(json.dumps(service.consult_setup(args.goal), indent=2))
+        return 0
+
+    if args.command == "remember":
+        print(json.dumps(service.remember_preference(args.key, args.value), indent=2))
         return 0
 
     if args.command == "oidc-discovery":

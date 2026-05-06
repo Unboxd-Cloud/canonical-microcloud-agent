@@ -1,0 +1,25 @@
+name: canonical-microcloud-agent
+base: core24
+version: "0.1.0"
+summary: Canonical MicroCloud operator agent
+description: |
+  Canonical MicroCloud agent packaged as a snap. The agent starts first,
+  consults with the operator on suitable configuration, and then helps
+  install and manage the MicroCloud stack through approval-gated workflows.
+grade: devel
+confinement: classic
+
+apps:
+  microcloud-agent:
+    command: bin/microcloud-agent
+  microcloud-agent-kernel:
+    command: bin/microcloud-agent-kernel
+    daemon: simple
+    restart-condition: always
+
+parts:
+  canonical-microcloud-agent:
+    plugin: python
+    source: .
+    python-requirements:
+      - requirements-snap.txt

@@ -1,0 +1,2 @@
+python-multipart>=0.0.20
+agentkernel[api]>=0.3.3

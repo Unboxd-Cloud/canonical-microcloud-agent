@@ -4,6 +4,7 @@ from dataclasses import asdict
 
 from .adapters import Context
 from .chat import build_chat_response, chunk_text
+from .consult import build_setup_proposal
 from .config import (
     ansible_bin,
     ansible_inventory_bin,
@@ -39,6 +40,7 @@ from .config import (
     vpn_bin,
     vscode_bin,
 )
+from .memory import MemoryStore
 from .mattermost import MattermostNotifier, format_workflow_message
 from .oidc import OIDCClient
 from .openapi_client import OpenAPIClient
@@ -56,6 +58,7 @@ class AgentService:
     ) -> None:
         self.runner = CommandRunner()
         self.registry = WorkflowRegistry()
+        self.memory = MemoryStore()
         self.notifier = notifier or MattermostNotifier()
         self.oidc_client = oidc_client or OIDCClient()
         self.openapi_client = openapi_client or OpenAPIClient()
@@ -174,6 +177,7 @@ class AgentService:
         return self.openapi_client.request(method, path, query=query, headers=headers, json_body=json_body)
 
     def chat(self, message: str) -> dict:
+        self.memory.record_goal(message)
         workflows = [
             "assess_health",
             "bootstrap_cluster",
@@ -190,3 +194,31 @@ class AgentService:
     def stream_chat(self, message: str) -> list[str]:
         response = self.chat(message)["response"]
         return list(chunk_text(response))
+
+    def consult_setup(self, goal: str) -> dict:
+        memory = self.memory.record_goal(goal)
+        proposal = build_setup_proposal(goal, memory)
+        self.memory.remember_host(
+            proposal.hostname,
+            {
+                "interfaces": proposal.detected_interfaces,
+                "disks": proposal.detected_disks,
+                "installed_snaps": proposal.installed_snaps,
+            },
+        )
+        return {
+            "goal": goal,
+            "proposal": proposal.to_dict(),
+            "message": (
+                "I reviewed the host first and prepared a suggested MicroCloud setup path. "
+                "Please confirm the missing decisions before I run any mutating workflow."
+            ),
+        }
+
+    def remember_preference(self, key: str, value: str) -> dict:
+        memory = self.memory.remember_preference(key, value)
+        return {
+            "status": "ok",
+            "message": f"Thank you. I will remember the preference '{key}' for future recommendations.",
+            "preferences": memory.operator_preferences,
+        }

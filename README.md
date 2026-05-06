@@ -44,10 +44,12 @@ This repository supports three real runtime shapes:
 
 - direct local CLI and HTTP mode via `python3 -m microcloud_agent ...`
 - Agent Kernel API mode via `python3 -m microcloud_agent.agentkernel_app`
+- snap-based operator install where the agent is installed first and then consults on MicroCloud setup
 - containerized deployment via the hardened `Dockerfile`
 
 The direct CLI is the simplest operator path.
 The Agent Kernel entrypoint is the preferred long-running API runtime.
+The snap package is the preferred operator install path when you want the agent to guide setup on-host.
 The container image is the preferred publish and deployment artifact.
 
 ## Environment variables
@@ -116,10 +118,27 @@ PYTHONPATH=src python3 -m microcloud_agent health
 PYTHONPATH=src python3 -m microcloud_agent plan assess_health --environment lab
 PYTHONPATH=src python3 -m microcloud_agent run assess_health --environment lab
 PYTHONPATH=src python3 -m microcloud_agent plan configure_multi_node --environment lab --host node-2
+PYTHONPATH=src python3 -m microcloud_agent consult-setup "set up this host for single-node MicroCloud"
+PYTHONPATH=src python3 -m microcloud_agent remember topology single-node
 PYTHONPATH=src python3 -m microcloud_agent serve --host 127.0.0.1 --port 8765
 PYTHONPATH=src python3 -m microcloud_agent chat "what workflows do you support?"
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 ```
+
+## Consultative setup
+
+The agent is intended to inspect the host first, suggest a fitting MicroCloud path, and then wait for confirmation before any mutating action.
+
+Example:
+
+```bash
+microcloud-agent consult-setup "install and manage MicroCloud on this machine"
+microcloud-agent remember interface enp5s0
+MICROCLOUD_AGENT_APPROVAL=approved microcloud-agent run install_microcloud_stack --environment lab
+MICROCLOUD_AGENT_APPROVAL=approved microcloud-agent run configure_single_node --environment lab
+```
+
+This flow is designed to stay polite, empathetic, contextual, goal-oriented, and approval-gated.
 
 ## Agent Kernel mode
 
@@ -169,6 +188,17 @@ systemctl status canonical-microcloud-agent-kernel
 ```
 
 The service reads overrides from `/etc/canonical-microcloud-agent.env`.
+
+## Snap deployment
+
+This repository now includes `snapcraft.yaml` so the agent can be packaged as a snap.
+
+The intended operator model is:
+
+1. install the agent snap first
+2. run `microcloud-agent consult-setup "<goal>"`
+3. confirm the recommended configuration choices
+4. run the approval-gated MicroCloud install and configuration workflows
 
 ## Testcontainers integration test
 

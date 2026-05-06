@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import os
+import tempfile
 import unittest
+from unittest.mock import patch
 
 from microcloud_agent.adapters import Context
 from microcloud_agent.service import AgentService
@@ -35,6 +38,14 @@ class StubOpenAPIClient:
 
 
 class ServiceTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.tempdir = tempfile.TemporaryDirectory()
+        os.environ["MICROCLOUD_AGENT_MEMORY_PATH"] = os.path.join(self.tempdir.name, "memory.json")
+
+    def tearDown(self) -> None:
+        os.environ.pop("MICROCLOUD_AGENT_MEMORY_PATH", None)
+        self.tempdir.cleanup()
+
     def test_notify_workflow_uses_notifier(self) -> None:
         notifier = StubNotifier()
         service = AgentService(notifier=notifier)
@@ -53,3 +64,21 @@ class ServiceTests(unittest.TestCase):
         self.assertEqual(service.oidc_discovery()["issuer"], "https://issuer.example")
         self.assertEqual(service.oauth2_client_credentials()["access_token"], "abc")
         self.assertEqual(service.openapi_request("GET", "/health")["body"]["path"], "/health")
+
+    @patch("microcloud_agent.consult.inspect_host")
+    def test_consult_setup_returns_message_and_proposal(self, inspect_host) -> None:
+        inspect_host.return_value = {
+            "hostname": "edge-02",
+            "interfaces": ["ens3"],
+            "disks": ["sda (100G)"],
+            "installed_snaps": [],
+        }
+        service = AgentService(notifier=StubNotifier())
+        payload = service.consult_setup("set up edge")
+        self.assertEqual(payload["proposal"]["hostname"], "edge-02")
+        self.assertIn("Please confirm", payload["message"])
+
+    def test_remember_preference_persists_value(self) -> None:
+        service = AgentService(notifier=StubNotifier())
+        payload = service.remember_preference("topology", "single-node")
+        self.assertEqual(payload["preferences"]["topology"], "single-node")
